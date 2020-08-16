@@ -1,0 +1,53 @@
+<th:block th:include="/common/top"></th:block>  
+
+<div class="container">
+    <form name='f' th:action="@{/j_spring_security_check}" method="post" class="login-form">
+                      
+                        <h2>Login</h2>
+                        <p class="message"></p>
+                        <div>
+                          <div class="txtb">
+                            <input type="text" id="username" name="username" require="required">
+                            <span data-placeholder="Username"></span>
+                          </div>
+                          <div class="txtb">
+                            <input type="password" id="password" name="password" require="required">
+                            <span data-placeholder="Password"></span>
+                          </div>
+                          <input type="submit" class="logbtn" id="btnlogin" value="Login" name="btnlogin">
+                          <input type="hidden" name="admin_login" value="1">
+                          <div class="bottom-login">
+                            Don't have account? <a href="register.html">Sign up</a>
+                          </div>
+                        </div>
+                        
+                        <div class="row">
+						       <div class="col-md-12">
+						        <div th:if="${param.error}"
+						         class="alert alert-danger alert-dismissable">
+						         <p style="position: relative; left: 25%">
+						          <i class="icon fa fa-ban"></i> <span>Invalid Username and Password.</span>
+						         </p>
+						        </div>
+						        <div th:if="${param.logout}"
+						         class="alert alert-info alert-dismissable">
+						         <p style="position: relative; left: 25%">
+						          <i class="icon fa fa-info"></i> <span
+						           >You have been logged
+						           out.</span>
+						         </p>
+						        </div>
+						        <div th:if="${msg!=null}"
+						         class="alert alert-warning alert-dismissable">
+						         <p>
+						          <i class="icon fa fa-warning"></i> <span th:text="${msg}"></span>
+						         </p>
+						        </div>
+						       </div>
+						      </div>
+                    
+                  </form>
+    </div>
+<script src="js/main.js"></script>
+
+<th:block th:include="/common/footer"></th:block>  

@@ -1,0 +1,54 @@
+<th:block th:include="/common/top"></th:block>  
+<th:block th:include="/common/navbar"></th:block>  
+<th:block th:include="/common/sidebar"></th:block>
+
+<div class="app-main__outer">
+                    <div class="app-main__inner">
+                        <div class="app-page-title">
+                            <div class="page-title-wrapper">
+                                <div class="page-title-heading">
+                                    <div class="page-title-icon">
+                                        <i class="pe-7s-display1 icon-gradient bg-premium-dark">
+                                        </i>
+                                    </div>
+                                    <div>Update Seller
+                                        <div class="page-title-subheading">Update Seller information.
+                                        </div>
+                                    </div>
+                                </div>   
+                               </div>
+                        </div>          
+                        <div class="tab-content">
+                            <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="main-card mb-3 card">
+                                            <div class="card-body"><h5 class="card-title">Update Seller</h5>
+                                            
+                                                <form th:action="@{/updateSeller}" method="POST" th:object="${seller}">
+
+													<div class="position-relative form-group"><label>Username</label>
+                                                    	<input th:field="*{username}" placeholder="Input Full Name" type="text" class="form-control" readonly="true" required>
+                                                    </div>
+                                                    <div class="position-relative form-group"><label>Full Name</label>
+                                                    	<input th:field="*{full_name}" placeholder="Input Full Name" type="text" class="form-control" required>
+                                                    </div>
+                                                    
+                                                    <div class="position-relative form-group"><label>Email</label>
+                                                    	<input th:field="*{email}" placeholder="Input Email Address" type="email" class="form-control" required>
+                                                    </div>
+                                                    <div class="position-relative form-group"><label>Phone</label>
+                                                    	<input th:field="*{phone}" placeholder="Input Phone Number" type="tel" pattern="[0]{1}[0-9]{9}" class="form-control" required>
+                                                    </div>
+													     
+                                                    <input type="submit" value="Submit" class="mt-1 btn btn-primary">
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<script src="js/main.js"></script>
+  <th:block th:include="/common/footer"></th:block>  
