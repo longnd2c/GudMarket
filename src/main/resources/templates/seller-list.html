@@ -77,8 +77,8 @@
                             <td th:text="${s.id_level}"></td>
                             <td th:text="${s.num_posted}"></td>
                             <td th:text="${s.post_remain}"></td>
-                            <td th:text="${s.reg_date}"></td>
-                            <td th:text="${s.block_to}"></td>
+                            <td th:text="${#dates.format(s.reg_date, 'dd-MM-yyyy')}"></td>
+                            <td th:text="${#dates.format(s.block_to, 'dd-MM-yyyy')}"></td>
                             <td>
                             	<!-- Update button -->
                             	<a th:href="@{/seller-update/} + ${s.username}" class="btn btn-sm btn-info edit-product" style="color:#fff;"><span style="display:none;"></span><i class="fas fa-pencil-alt"></i></a>

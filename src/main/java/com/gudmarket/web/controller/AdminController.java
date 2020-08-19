@@ -1,13 +1,19 @@
 package com.gudmarket.web.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +31,14 @@ public class AdminController {
 	@Autowired
 	SellerService sellerService;
 	
+	@InitBinder
+    public void initBinder(WebDataBinder binder) {
+        // Date - dd/MM/yyyy
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
+    }
+	
 	@RequestMapping("/seller-list")
 	  public String listAdmin(Model model) {
 	    model.addAttribute("listSeller", accRepo.findSeller());
@@ -39,10 +53,8 @@ public class AdminController {
 	
 	@RequestMapping("/seller-update/{username}")
 	  public String updateTrainee(@PathVariable String username, Model model) {
-		Optional<Account> seller = accRepo.findById(username);
-		if (seller.isPresent()) {
-	        model.addAttribute("seller", seller.get());
-	     }
+		Account seller = accRepo.findByUsername(username);
+		model.addAttribute("seller", seller);
 	    return "seller-update";
 	  }
 	@RequestMapping("/saveSeller") 
@@ -68,7 +80,6 @@ public class AdminController {
 	@RequestMapping("/updateSeller")
 	  public ModelAndView doUpdateSeller(@ModelAttribute("seller") Account seller, BindingResult bindingResult) {  
 		  ModelAndView modelAndView=new ModelAndView();
-		  System.out.println(seller.toString());
 		  accRepo.save(seller);
 		  modelAndView.addObject("listSeller",accRepo.findSeller());
 		  modelAndView.setViewName("seller-list"); 

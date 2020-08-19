@@ -40,6 +40,14 @@
                                                     <div class="position-relative form-group"><label>Phone</label>
                                                     	<input th:field="*{phone}" placeholder="Input Phone Number" type="tel" pattern="[0]{1}[0-9]{9}" class="form-control" required>
                                                     </div>
+													     <input th:field="*{password}" type="hidden">
+													     <input th:field="*{role}" type="hidden">
+													     <input th:field="*{money}" type="hidden">
+													     <input th:field="*{id_level}" type="hidden">
+													     <input th:field="*{num_posted}" type="hidden">
+													     <input th:field="*{post_remain}" type="hidden">
+													     <input th:field="*{reg_date}" type="hidden">
+													     <input th:field="*{block_to}" type="hidden">
 													     
                                                     <input type="submit" value="Submit" class="mt-1 btn btn-primary">
                                                 </form>
