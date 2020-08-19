@@ -1,0 +1,132 @@
+
+/*      LOGIN       */
+  .login-form{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+      width: 500px;
+      height:375px;
+      padding:80px 40px;
+      border:2px solid #adadad;
+
+  }
+  .login-form h2{
+      text-align: center;
+      margin-top:-50px;
+      margin-bottom: 20px;
+  }
+.txtb{
+    border-bottom: 2px solid #adadad;
+    position: relative;
+    margin:30px 0;
+}
+.txtb input{
+    font-size:15px;
+    color: #333333;
+    border:none;
+    width: 100%;
+    outline: none;
+    background: none;
+    padding: 0 5px;
+    height: 40px;
+}
+.txtb span::before{
+    content: attr(data-placeholder);
+    position:absolute;
+    top: 50%;
+    left: 5px;
+    color: #adadad;
+    transform: translateY(-50%);
+    z-index: -1;
+    transition:.5s;
+}
+.txtb span::after{
+    content: '';
+    position: absolute;
+    top:100%;
+    left: 0%;
+    width: 0%;
+    height: 2px;
+    background: linear-gradient(120deg,#3498db,#8e44ad);
+    transition: .5s;
+}
+.focus + span::before{
+    top:-5px;
+}
+.focus + span::after{
+    width: 100%;
+}
+.logbtn{
+    display:block;
+    width:100%;
+    height: 50px;
+    border: none;
+    background: linear-gradient(120deg,#3498db,#8e44ad),#3498db;
+    background-size:200%;
+    color:#fff;
+    outline: none;
+    cursor: pointer;
+    transition: .5s;
+}
+.logbtn:hover{
+    background-position: right;
+}
+.bottom-login{
+    margin-top: 20px;
+    text-align: center;
+    font-size: 13px;
+}
+
+.register-form{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 500px;
+    height:500px;
+    padding:80px 40px;
+    border:2px solid #adadad;
+}
+.register-form h2{
+    text-align: center;
+    margin-top:-50px;
+    margin-bottom: 20px;
+    
+}
+
+.thanks{
+  text-align: center;
+  transform: translate(0%,80%);
+
+}
+.thankyou{
+  height: 500px;
+
+}
+.thanks p{
+  margin-bottom: 50px;
+}
+/*
+#pageno{
+  
+  overflow: hidden;
+}
+
+#pageno li{
+  display: inline-block;
+  padding: 13px;
+  transition: .4s;
+  background-color: #adadad;
+}
+
+#pageno a{
+  color:white;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+#pageno li:hover{
+  background-color: #29a9e3;
+}
+*/
