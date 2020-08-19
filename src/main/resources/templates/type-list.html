@@ -1,0 +1,108 @@
+<th:block th:include="/common/top"></th:block>  
+<th:block th:include="/common/navbar"></th:block> 
+<th:block th:include="/common/sidebar"></th:block> 
+
+
+<div class="app-main__outer">
+  <div class="app-main__inner">
+      <div class="app-page-title">
+          <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div class="page-title-icon">
+                    <i class="pe-7s-drawer icon-gradient bg-happy-itmeo">
+                    </i>
+                </div>
+                <div>Type Of Post
+                    <div class="page-title-subheading">All Type Of Post</div>
+                </div>
+            </div>
+            </div>
+          </div>
+      
+<div class="row">
+        <div class="col-lg-12">
+            <div class="main-card mb-3 card">
+                <div class="card-body">
+                <div class="row">
+                    <div class="col-7">
+                        <h3>Types</h3>
+                    </div>
+                    
+                    <div class="col-3">
+                    	<div class="search-wrapper">
+		                    <div class="input-holder">
+		                    
+							    <form th:action="@{/searchType}">
+							      <input th:value="${searchKey}" type="text" class="search-input" placeholder="Type to search" name="searchKey">
+							    </form>
+							    <button class="search-icon"><span></span></button>
+							  
+        
+		                    </div>
+		                    <button class="close"></button>
+		                </div>
+                    </div>
+                    
+                    
+                    <div class="col-2">
+                        <a th:href="@{/type-add}" class="btn btn-light btn-sm">Add Type</a>
+                    </div>
+                </div>
+                
+                    <table class="mb-0 table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Type Name</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="t : ${listType}">
+                            <td th:text="${t.id_type}"></td>
+                            <td th:text="${t.type_name}"></td>
+                            <td>
+                            	
+                            	
+                            	<!-- Delete button -->
+                            	<button type ="button" class="btn btn-sm btn-danger delete-product" style="color:#fff;" data-toggle="modal"
+                    				th:attr="data-target='#delModal'+ ${t.id_type}"><i class="fas fa-trash-alt"></i>
+                            	</button>
+                            	
+                            	<!-- Yes/No confirm -->
+                            	<div class="modal fade" th:id="'delModal' + ${t.id_type}">
+				                    <div class="modal-dialog">
+				                        <div class="modal-content">
+				
+				                            <!-- Modal Header -->
+				                            <div class="modal-header">
+				                                <h4 class="modal-title">Are you sure?</h4>
+				                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+				                            </div>
+				
+				                            <!-- Modal footer -->
+				                            <div class="modal-footer">
+				                            	<a th:href="@{/typeDelete/} + ${t.id_type}"><button
+				                                        type="button" class="btn btn-info">Yes</button></a>
+				                                <button type="button" class="btn btn-danger"
+				                                    data-dismiss="modal">Close</button>
+				                                
+				                            </div>
+				                        </div>
+				                    </div>
+				                </div>
+				                
+				                
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+  <th:block th:include="/common/footer"></th:block>  
