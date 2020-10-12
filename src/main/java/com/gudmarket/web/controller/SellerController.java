@@ -22,6 +22,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -260,5 +261,12 @@ public class SellerController {
 				accRepo.save(acc);
 			}
 		return "redirect:/postManage";
+	  }
+	
+	@RequestMapping("/sellerPostDelete/{id}")
+	  public String doDeletePost(@PathVariable String id, Model model, RedirectAttributes redirectAttributes) {
+		 postRepo.deleteById(id);
+		 redirectAttributes.addFlashAttribute("message", "Delete Post Successfully!!");
+	    return "redirect:/allSellerPost";
 	  }
 }

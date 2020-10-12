@@ -61,7 +61,7 @@
 						</div>
 
 						<div class="block2-txt flex-w flex-t p-t-14">
-							<div class="block2-txt-child1 flex-col-l ">
+							<div class="block2-txt-child1 flex-col-l " th:style="${(p.status==false && p.priority!=null ? 'width:calc(100% - 135px);' : '')+(p.status==false && p.priority==null ? 'width:calc(100% - 105px);' : '')}">
 							
 								<form th:action="@{/postdetail}" th:id="'post_form' + ${p.id_post}">
 							      <a th:text="${p.title}" href="#" th:id="'a_link' + ${p.id_post}" th:attr="onclick=|send_form('${p.id_post}')|" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
@@ -74,6 +74,13 @@
 								</span>
 								
 							</div>
+							<div th:if="${p.status==false}" class="block2-txt-child2 flex-r p-t-3"  style="width:100px; display: flex; flex-wrap: wrap; justify-content:center; margin-right: 5px;">
+								<i style="color: #6c7ae0; font-size: 22px;" class="fas fa-exclamation-triangle"></i>
+								<span class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6" style="font-size: 10px; color: #6c7ae0;">
+									Not yet approved
+								</span>
+							</div>
+							
 							<div th:if="${p.priority!=null}" class="block2-txt-child2 flex-r p-t-3"  style="display: flex; flex-wrap: wrap; justify-content:center;" >
 								<i style="color: #6c7ae0; font-size: 22px;" class="fas fa-award"></i>
 								<span class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6" style="font-size: 10px; color: #6c7ae0;">
@@ -81,9 +88,37 @@
 								</span>
 								
 							</div>
-
+							   
 						</div>
+						
+						<button th:attr="data-target='#delModal'+ ${p.id_post}" data-toggle="modal" 
+						class="flex-c-m stext-101 cl5 size-103 bg2  hov-btn1 p-lr-15 trans-04" style="width: 100%;" onclick="hide()">
+								<i class="fas fa-trash-alt" style="margin-right: 10px;"></i> DELETE
+						</button>
+
 					</div>
+					<!-- Yes/No confirm -->
+                            	<div class="modal fade" th:id="'delModal' + ${p.id_post}">
+				                    <div class="modal-dialog">
+				                        <div class="modal-content">
+				
+				                            <!-- Modal Header -->
+				                            <div class="modal-header">
+				                                <h4 class="modal-title">Are you sure?</h4>
+				                                <button type="button" class="close" data-dismiss="modal" onclick="show()">&times;</button>
+				                            </div>
+				
+				                            <!-- Modal footer -->
+				                            <div class="modal-footer">
+				                            	<a th:href="@{/sellerPostDelete/} + ${p.id_post}"><button
+				                                        type="button" class="btn btn-info">Yes</button></a>
+				                                <button type="button" class="btn btn-danger"
+				                                    data-dismiss="modal" onclick="show()">Close</button>
+				                                
+				                            </div>
+				                        </div>
+				                    </div>
+				                </div>
 				</div>
 
 				
@@ -101,6 +136,12 @@
 <script>
 function send_form(id_post) {
     document.getElementById("post_form"+id_post).submit();
+}
+function hide(){
+	document.getElementById("shadow").style.zIndex="0";
+}
+function show(){
+	document.getElementById("shadow").style.zIndex="1100";
 }
 </script>
 
