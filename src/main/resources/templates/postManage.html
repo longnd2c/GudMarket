@@ -1,0 +1,220 @@
+<th:block th:include="/common/webapp/top"></th:block>  
+<th:block th:include="/common/webapp/navbar"></th:block>  
+
+<script>
+	document.title='GudMarket - Post Manage'
+</script>
+
+
+<!-- breadcrumb -->
+	<div class="container">
+		<div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+			<a th:href="@{/index}" class="stext-109 cl8 hov-cl1 trans-04">
+				Home
+				<i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+			</a>
+
+			<span class="stext-109 cl4">
+				Post Management
+			</span>
+		</div>
+	</div>
+		
+
+	<!-- Shoping Cart -->
+	<div class="bg0 p-t-75 p-b-85">
+		<div class="container" th:object="${user}">
+							<div th:if="${message}" class="alert alert-danger alert-dismissable" style="border-radius:0; text-align:center; margin-left:25px;margin-right:40px;">
+						         <i class="icon fa fa-ban"></i>
+						         <span th:text="${message}" style="position: relative; margin:0;">	
+						         </span>
+						         
+							</div>
+			<div class="row">
+				<div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
+					<div class="m-l-25 m-r--38 m-lr-0-xl">
+						<div class="wrap-table-shopping-cart">  
+							<table class="table-shopping-cart">
+								<tbody><tr class="table_head" style="border-bottom: 0;">
+                                    <th class="column-1" style="font-size: 25px;">POST REMAINING: <b th:utext="${user.post_remain}" style="color: #717fe0; font-size: 30px;"> 0</b>
+                                        <a th:href="@{/postNew}" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail" style="margin-left: 35%; width:100px;">
+                                            <span class="lnr lnr-file-add" style="font-size: 25px; margin-right: 10px;"></span>
+                                            New Post
+                                        </a>
+                                    </th>
+                                    
+								</tr>								
+                            </tbody></table>
+                        </div>
+                        <div class="wrap-table-shopping-cart" >  
+							<table class="table-shopping-cart">
+								<tbody><tr class="table_head" style="border-bottom: 0; border-top:0;">
+									<th class="column-1" style="font-size: 25px;">Number of Posted: <b th:utext="${user.num_posted}" style="color: #717fe0; font-size: 30px;"> 0</b> </th>
+								</tr>								
+                            </tbody></table>
+                        </div>
+                        
+                        <div class="wrap-table-shopping-cart" style="border-bottom: 1px solid #e6e6e6;">  
+							<table class="table-shopping-cart">
+								<tbody><tr class="table_head" style="border-top:0; border-bottom: 0;">
+                                    <th class="column-1">New Posted: </th>
+                                </tr>							
+                            </tbody></table>
+                            <div class="container" style="margin-top: 10px;">
+                                <div class="row isotope-grid" id="grid" style="padding-left: 20px;padding-right: 20px;">
+                                
+                                    <div class="col-sm-6 col-md-4 p-b-35 isotope-item imgfix" th:each="p : ${listPost}">
+										<!-- Block2 -->
+										<div class="block2">
+											<div class="block2-pic hov-img0" th:if="${p.img}!=null">
+												<img th:src="@{${p.img.split('@')[0]}}" alt="IMG-PRODUCT">
+											</div>
+											<div class="block2-pic hov-img0" th:if="${p.img}==null">
+												<img src="/webapp/images/default-img.png" alt="IMG-PRODUCT">
+											</div>
+					
+											<div class="block2-txt flex-w flex-t p-t-14">
+												<div class="block2-txt-child1 flex-col-l ">
+												
+													<form th:action="@{/postdetail}" th:id="'post_form' + ${p.id_post}">
+												      <a th:text="${p.title}" href="#" th:id="'a_link' + ${p.id_post}" th:attr="onclick=|send_form('${p.id_post}')|" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+												      </a>
+												      <input type="hidden" name ="id_post" th:value="${p.id_post}"/>
+												    </form>						
+					
+													<span th:text="${'$'+p.price}" class="stext-105 cl3">
+														
+													</span>
+													
+												</div>
+					
+											</div>
+										</div>
+									</div>
+                                    
+                                </div>
+                                <div th:if="${!listPost.isEmpty()}" class="flex-c-m flex-w w-full " style="margin-bottom: 20px;">
+                                
+                                    <a th:href="@{/allSellerPost}" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04">
+                                        Show All
+                                    </a>
+
+                                </div>
+                            </div>	
+						</div>
+					</div>
+				</div>
+				
+				<div class="col-sm-10 col-lg-7 col-xl-5 m-lr-auto m-b-50">
+					<div class="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-40 m-lr-0-xl p-lr-15-sm">
+						<form id="buy_form" th:action="@{/buyPost}" method="post" onsubmit="return validateForm()">
+							<h4 class="mtext-109 cl2 p-b-30">
+								Your Account
+							</h4>
+	
+							<div class="flex-w flex-t bor12 p-b-13">
+								<div class="size-208">
+									<span class="stext-110 cl2">
+										Money:
+									</span>
+								</div>
+	
+								<div class="size-209">
+									<span th:utext="'$'+${user.money}" class="mtext-110 cl2">
+										
+	                                </span>
+	                                <input type="hidden" id="money" th:value="${user.money}">
+								</div>
+							</div>
+	
+	                            <h4 class="mtext-109 cl2 p-b-30" style="margin-top: 20px;">
+	                                Buy Post
+	                            </h4>
+	                            <div class= "respon6-next">
+	                                <div class="rs1-select2 bor8 bg0">
+	                                    <select id="buy_money" class="js-select2 select2-hidden-accessible" onchange="select(this)" name="buy_money" tabindex="-1" aria-hidden="true">
+	                                        <option value="default">Choose Num of Post</option>
+	                                        <option value="1">1 post - $1</option>
+	                                        <option value="1.75">2 posts - $1.75</option>
+	                                        <option value="4.25">5 posts - $4.25</option>
+	                                        <option value="8">10 posts - $8</option>
+	                                    </select>
+	                                    <div class="dropDownSelect2"></div>
+	                                </div>
+	                                <input type="hidden" id="num_post" name="num_post">
+	                            </div>
+	                            <div class="flex-w flex-t bor12 p-b-13"></div>
+	
+							<div class="flex-w flex-t p-t-27 p-b-33">
+								<div class="size-208">
+									<span class="mtext-101 cl2">
+										Money left:
+									</span>
+								</div>
+	
+								<div class="size-209 p-t-1">
+									<span th:utext="'$'+${user.money}" class="mtext-110 cl2" id="money_left">
+	                                    
+	                                </span>
+	                                <i id="sub" class="mtext-110 cl2" style="font-size: 12px;"></i>
+								</div>
+							</div>
+	
+							<button type="submit" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+								Proceed to Checkout
+							</button>
+						</form>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	
+<script>
+function select(sel){
+    var money=sel.value;
+    if(money!="default"){
+        var x = document.getElementById("money").value-money;
+        x="$" +x;
+        document.getElementById("money_left").innerHTML=x;
+        document.getElementById("sub").innerHTML=" ("+document.getElementById("money").value+" - "+money+")";
+        
+        switch(money){
+        case "1":
+        	document.getElementById("num_post").value=1;
+        	break;
+        case "1.75":
+        	document.getElementById("num_post").value=2;
+        	break;
+        case "4.25":
+        	document.getElementById("num_post").value=5;
+        	break;
+        case "8":
+        	document.getElementById("num_post").value=10;
+        	break;
+        }
+    }
+    else{
+        var x = document.getElementById("money").value;
+        x="$"+x;
+        document.getElementById("money_left").innerHTML=x;
+        document.getElementById("sub").innerHTML="";
+    }
+    
+}
+function send_form(id_post) {
+    document.getElementById("post_form"+id_post).submit();
+}
+function validateForm()
+{
+	var x = document.getElementById("buy_money").value;
+	if (x == "default") {
+		alert("You must choose Number of Post!");
+		return false;
+	}
+
+}
+</script>
+
+<th:block th:include="/common/webapp/footer"></th:block>  

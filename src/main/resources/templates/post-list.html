@@ -1,7 +1,9 @@
-<th:block th:include="/common/top"></th:block>  
-<th:block th:include="/common/navbar"></th:block> 
-<th:block th:include="/common/sidebar"></th:block> 
-
+<th:block th:include="/common/admin/top"></th:block>  
+<th:block th:include="/common/admin/navbar"></th:block> 
+<th:block th:include="/common/admin/sidebar"></th:block> 
+<script>
+	document.title='GudMarket - Admin Dashboard - Manage Post'
+</script>
 
 <div class="app-main__outer">
   <div class="app-main__inner">
@@ -52,12 +54,8 @@
                         <tr>
                             <th>ID Post</th>
                             <th>Title</th>
-                            <th>Username</th>
+                            <th>Username/Email</th>
                             <th>ID Type</th>
-                            <th>Description</th>
-                            <th>Image</th>
-                            <th>Price</th>
-                            <th>Contact</th>
                             <th>Date</th>
                             <th>Status</th>
                             <th></th>
@@ -67,21 +65,28 @@
                         <tr th:each="p : ${listPost}">
                             <td th:text="${p.id_post}"></td>
                             <td th:text="${p.title}"></td>
-                            <td th:text="${p.acc.username}"></td>
-                            <td th:text="${p.id_type}"></td>
-                            <td th:text="${p.description}"></td>
-                            <td th:text="${p.img}"></td>
-                            <td th:text="${p.price}"></td>
-                            <td th:text="${p.contact}"></td>
-                            <td th:text="${p.date}"></td>
+                            <td th:text="${p.username}"></td>
+                            <td th:text="${p.type.type_name}"></td>
+                            <td th:text="${#dates.format(p.date, 'dd-MM-yyyy')}"></td>
                             <td th:text="${p.status}"></td>
                             <td>
+                            
+                            <!-- SHOW button -->
+                            	<button type ="button" class="btn btn-sm btn-info delete-product" style="color:#fff;" data-toggle="modal"
+                    				th:attr="data-target='#showModal'+ ${p.id_post}"><i class="fas fa-eye"></i>
+                    				DETAIL
+                            	</button>
                             	<!-- Update button -->
-                            	<a th:href="@{/post-update/} + ${p.id_post}" class="btn btn-sm btn-info edit-product" style="color:#fff;"><span style="display:none;"></span><i class="fas fa-pencil-alt"></i></a>
+                            	<a th:if="${p.status==false}" th:href="@{/post-update/} + ${p.id_post}" class="btn btn-sm btn-success edit-product" style="color:#fff;">
+	                            	<span style="display:none;"></span>
+	                            	<i class="fas fa-check"></i>
+	                            	APPROVAL
+                            	</a>
                             	
                             	<!-- Delete button -->
                             	<button type ="button" class="btn btn-sm btn-danger delete-product" style="color:#fff;" data-toggle="modal"
                     				th:attr="data-target='#delModal'+ ${p.id_post}"><i class="fas fa-trash-alt"></i>
+                    				DELETE
                             	</button>
                             	
                             	<!-- Yes/No confirm -->
@@ -107,6 +112,63 @@
 				                    </div>
 				                </div>
 				                
+				                <!-- Show info -->
+                            	<div class="modal fade" th:id="'showModal' + ${p.id_post}">
+					                    <div class="modal-dialog">
+					                        <div class="modal-content">
+					
+					                            <!-- Modal Header -->
+					                            <div class="modal-header">
+					                                <h4 class="modal-title">Post Information</h4>
+					                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+					                            </div>
+					                            <div class="modal-body">
+						                            <div class="position-relative form-group"><label>Post ID</label>
+	                                                    	<input th:value="${p.id_post}" type="text" class="form-control" readonly>
+	                                                 </div>
+	                                                 <div class="position-relative form-group"><label>Title</label>
+	                                                    	<input th:value="${p.title}" type="text" class="form-control" readonly>
+	                                                 </div>
+	                                                 <div class="position-relative form-group"><label>Username/Email</label>
+	                                                    	<input th:value="${p.username}" type="text" class="form-control" readonly>
+	                                                 </div>
+	                                                 <div class="position-relative form-group"><label>Type</label>
+	                                                    	<input th:value="${p.type.type_name}" type="text" class="form-control" readonly>
+	                                                 </div>
+	                                                 <div class="position-relative form-group"><label>Description</label>
+	                                                    	<textarea th:text="${p.description}" class="form-control" readonly></textarea>
+	                                                 </div>
+	                                                 <div class="position-relative form-group"><label>Price</label>
+	                                                    	<input th:value="${p.price}" type="text" class="form-control" readonly>
+	                                                 </div>
+	                                                 <div class="position-relative form-group"><label>Contact</label>
+	                                                    	<input th:value="${p.contact}" type="text" class="form-control" readonly>
+	                                                 </div>
+	                                                 <div class="position-relative form-group"><label>Image</label>
+	                                                 	<div th:if="${p.img!=null}">
+	                                                    	<img th:each="img : ${p.img.split('@')}" th:src="@{${img}}" alt="" style="width:200px; height:200px; margin:10px;"/>
+	                                                    </div>
+	                                                    <input th:if="${p.img==null}" value="No Image" type="text" class="form-control" readonly>
+	                                                 </div>
+	                                                 <div class="position-relative form-group"><label>Date</label>
+	                                                    	<input th:value="${#dates.format(p.date, 'dd-MM-yyyy')}" type="text" class="form-control" readonly>
+	                                                 </div>
+	                                                 <div class="position-relative form-group"><label>Priority</label>
+	                                                    	<input th:value="${#dates.format(p.priority, 'dd-MM-yyyy')}" type="text" class="form-control" readonly>
+	                                                 </div>
+	                                                 <div class="position-relative form-group"><label>Status</label>
+	                                                    	<input th:value="${p.status}" type="text" class="form-control" readonly>
+	                                                 </div>
+					                            	
+					                            </div>
+					                            <!-- Modal footer -->
+					                            <div class="modal-footer">
+					                                <button type="button" class="btn btn-danger"
+					                                    data-dismiss="modal">Close</button>
+					                            </div>
+					                        </div>
+					                    </div>
+				                </div>
 				                
                             </td>
                         </tr>
@@ -120,4 +182,4 @@
 </div>
 
 
-  <th:block th:include="/common/footer"></th:block>  
+  <th:block th:include="/common/admin/footer"></th:block>  

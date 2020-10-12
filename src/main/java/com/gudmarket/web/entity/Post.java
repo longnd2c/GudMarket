@@ -24,12 +24,15 @@ public class Post {
 	  @Column(name = "title")
 	  private String title;
 	  
-	  @ManyToOne(fetch = FetchType.LAZY)
-	    @JoinColumn(name = "username", nullable = false)
-	    private Account acc;
+	  //@ManyToOne(fetch = FetchType.LAZY)
+	    //@JoinColumn(name = "username", nullable = false)
+	    //private Account acc;
+	  @Column(name = "username")
+	  private String username;
 	  
-	  @Column(name = "id_type")
-	  private String id_type;
+	  @ManyToOne(fetch = FetchType.LAZY)
+	  @JoinColumn(name = "id_type", nullable = false)
+	  private Type type;
 	  
 	  @Column(name = "description")
 	  private String description;
@@ -38,7 +41,7 @@ public class Post {
 	  private String img;
 	  
 	  @Column(name = "price")
-	  private int price;
+	  private Double price;
 	  
 	  @Column(name = "contact")
 	  private String contact;
@@ -48,8 +51,11 @@ public class Post {
 	  @Column(name = "date")
 	  private Date date;
 	  
+	  @Column(name = "priority")
+	  private Date priority;
+	  
 	  @Column(name = "status")
-	  private int status;
+	  private boolean status;
 
 	public String getId_post() {
 		return id_post;
@@ -67,20 +73,20 @@ public class Post {
 		this.title = title;
 	}
 
-	public Account getAcc() {
-		return acc;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setAcc(Account acc) {
-		this.acc = acc;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
-	public String getId_type() {
-		return id_type;
+	public Type getType() {
+		return type;
 	}
 
-	public void setId_type(String id_type) {
-		this.id_type = id_type;
+	public void setType(Type type) {
+		this.type = type;
 	}
 
 	public String getDescription() {
@@ -99,11 +105,11 @@ public class Post {
 		this.img = img;
 	}
 
-	public int getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(int price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 
@@ -122,17 +128,25 @@ public class Post {
 	public void setDate(Date date) {
 		this.date = date;
 	}
+	
+	public Date getPriority() {
+		return priority;
+	}
 
-	public int getStatus() {
+	public void setPriority(Date priority) {
+		this.priority = priority;
+	}
+
+	public boolean isStatus() {
 		return status;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(boolean status) {
 		this.status = status;
 	}
-	
+
 	public String toString() {
-		String str=this.id_post+this.title+this.contact+this.description+this.id_type+this.img+this.price+this.status+this.acc+this.date;
+		String str=this.id_post+this.title+this.contact+this.description+this.getType().toString()+this.img+this.price+this.status+this.username+this.date;
 		return str.toLowerCase();
 		}
 	

@@ -1,0 +1,238 @@
+
+/*      LOGIN       */
+body{
+	min-height:100vh;
+	background-image: linear-gradient(120deg, #3498db, #8e44ad);
+}
+  .login-form{
+  	background:#f1f1f1;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+      width: 360px;
+      height:620px;
+      padding:80px 40px;
+      border:2px solid #adadad;
+
+  }
+
+  .login-form h2{
+      text-align: center;
+      font-weight: bold;
+      margin-top:-50px;
+      margin-bottom: 60px;
+  }
+  .register-form{
+  	background:#f1f1f1;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+      width: 360px;
+      height: 700px;
+      padding:80px 40px;
+      border:2px solid #adadad;
+
+  }
+  .register-form h2{
+      text-align: center;
+      font-weight: bold;
+      margin-top:-50px;
+      margin-bottom: 60px;
+  }
+  .success-form{
+  	background:#f1f1f1;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+      width: 700px;
+      height: 360px;
+      padding:80px 40px;
+      border:2px solid #adadad;
+
+  }
+  .success-form h2{
+  		font-size:25px;
+      text-align: center;
+      font-weight: bold;
+      margin-top:-50px;
+      margin-bottom: 60px;
+  }
+.txtb{
+    border-bottom: 2px solid #adadad;
+    position: relative;
+    margin:30px 0;
+}
+.txtb input{
+    font-size:15px;
+    color: #333333;
+    border:none;
+    width: 100%;
+    outline: none;
+    background: none;
+    padding: 0 5px;
+    height: 40px;
+}
+.txtb span::before{
+    content: attr(data-placeholder);
+    position:absolute;
+    top: 50%;
+    left: 5px;
+    color: #adadad;
+    transform: translateY(-50%);
+    z-index: -1;
+    transition:.5s;
+}
+.txtb span::after{
+    content: '';
+    position: absolute;
+    top:100%;
+    left: 0%;
+    width: 0%;
+    height: 2px;
+    background: linear-gradient(120deg,#3498db,#8e44ad);
+    transition: .5s;
+}
+.focus + span::before{
+    top:-5px;
+}
+.focus + span::after{
+    width: 100%;
+}
+.logbtn{
+    display:block;
+    width:100%;
+    height: 50px;
+    border: none;
+    background: linear-gradient(120deg,#3498db,#8e44ad),#3498db;
+    background-size:200%;
+    color:#fff;
+    outline: none;
+    cursor: pointer;
+    transition: .5s;
+}
+.logbtn:hover{
+    background-position: right;
+}
+.bottom-login{
+    margin-top: 40px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 13px;
+}
+
+.bottom-login-forgot{
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left:94px;
+    text-align: right;
+    font-size: 13px;
+}
+.bottom-login-home{
+    margin-top: 0;
+    margin-bottom: 0;
+    text-align: left;
+    font-size: 13px;
+}
+
+.thanks{
+  text-align: center;
+  transform: translate(0%,80%);
+
+}
+.thankyou{
+  height: 500px;
+
+}
+.thanks p{
+  margin-bottom: 50px;
+}
+
+@media screen and (max-width: 1050px){
+    .container{
+        grid-gap: 5rem;
+    }
+}
+@media screen and (max-width: 1000px){
+    .success-form{
+        width:360px;
+    }
+    .success-form h2{
+        font-size: 20px;
+    }
+}
+
+/*BUTTON GOOGLE
+*/
+.google-button[data-v-9fbcc77a]{
+      height: 50px;
+    width: 100%;
+    background: #fff;
+    color: #dcdfe6;
+    border: 1px solid rgba(145,148,161,.3);
+    border-radius: 2px;
+    white-space: nowrap;
+    padding: 0;
+    cursor: pointer;
+    transition: .5s;
+}
+.google-button[data-v-9fbcc77a]:hover{
+     background: #ECECEC;
+}
+
+
+.google-button__icon[data-v-9fbcc77a] {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 13px 0 18px 59px;
+    width: 18px;
+    height: 18px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.google-button__text[data-v-9fbcc77a] {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0 12px;
+    font-size: 14px;
+    color: #66727f;
+}
+
+.notification .badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  padding: 5px 5px;
+  border-radius: 50%;
+  background-color: red;
+  color: white;
+}
+.notification{
+  border: 1px solid red;
+}
+
+/*
+#pageno{
+  
+  overflow: hidden;
+}
+
+#pageno li{
+  display: inline-block;
+  padding: 13px;
+  transition: .4s;
+  background-color: #adadad;
+}
+
+#pageno a{
+  color:white;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+#pageno li:hover{
+  background-color: #29a9e3;
+}
+*/

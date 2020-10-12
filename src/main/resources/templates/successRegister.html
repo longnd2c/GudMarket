@@ -1,0 +1,21 @@
+<th:block th:include="/common/admin/top"></th:block>  
+
+<script>
+	document.title='GudMarket - Register Successful'
+</script>
+
+<div class="container">
+    <form name='f'  method="post" class="success-form">
+                      
+                        <h2 style="font-weight: normal;">Register successful. A verification mail was send to your email address: </h2>
+                        <h2 th:text="${email}"></h2>
+                        <br>
+                        <h2 style="font-weight: normal;">Please check your email.</h2>
+                          <div class="bottom-login">
+                            <a th:href="@{/login}">Return Login page</a>
+                          </div>
+                        
+                  </form>
+    </div>
+
+<th:block th:include="/common/admin/footer"></th:block>  

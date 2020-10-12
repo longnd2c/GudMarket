@@ -1,0 +1,178 @@
+<th:block th:include="/common/admin/top"></th:block>  
+<th:block th:include="/common/admin/navbar"></th:block> 
+<th:block th:include="/common/admin/sidebar"></th:block> 
+<script>
+	document.title='GudMarket - Admin Dashboard - Manage Seller'
+</script>
+
+<div class="app-main__outer">
+  <div class="app-main__inner">
+      <div class="app-page-title">
+          <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div class="page-title-icon">
+                    <i class="pe-7s-drawer icon-gradient bg-happy-itmeo">
+                    </i>
+                </div>
+                <div>Social Seller Account
+                    <div class="page-title-subheading">All Seller Scocial Accounts
+                    </div>
+                </div>
+            </div>
+            
+            </div>
+          </div>
+      
+<div class="row">
+        <div class="col-lg-12">
+            <div class="main-card mb-3 card">
+                <div class="card-body">
+                <div class="row">
+                    <div class="col-7">
+                        <h3>Social Seller Accounts</h3>
+                    </div>
+                    
+                    <div class="col-3">
+                    	<div class="search-wrapper">
+		                    <div class="input-holder">
+		                    
+							    <form th:action="@{/searchSocialSeller}">
+							      <input th:value="${searchKey}" type="text" class="search-input" placeholder="Type to search" name="searchKey">
+							    </form>
+							    <button class="search-icon"><span></span></button>
+							  
+        
+		                    </div>
+		                    <button class="close"></button>
+		                </div>
+                    </div>
+                    
+                </div>
+                
+                    <table class="mb-0 table table-striped">
+                        <thead>
+                        <tr>
+                        	<th>Email</th>
+                            <th>Full Name</th>
+                            <th>Level</th>
+                            <th>Block to</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="s : ${listSocialSeller}">
+                       		<td th:text="${s.email}"></td>
+                            <td th:text="${s.full_name}"></td>
+                            <td th:text="${s.id_level}"></td>
+                            <td th:text="${#dates.format(s.block_to, 'dd-MM-yyyy')}"></td>
+                            <td>
+                            	<!-- Show button -->
+                            	<button type ="button" class="btn btn-sm btn-info edit-product" style="color:#fff;" data-toggle="modal"
+                    				th:attr="data-target='#showModal'+ ${s.id}"><i class="fas fa-eye" style="margin-right:5px;"></i>
+                    				DETAIL
+                            	</button>
+                            	<!-- Block button -->
+                            	<button th:if="${s.block_to==null}" type ="button" class="btn btn-sm btn-danger delete-product" style="color:#fff;" data-toggle="modal"
+                    				th:attr="data-target='#delModal'+ ${s.id}"><i class="fas fa-ban" style="margin-right:5px;"></i>
+                    				BLOCK
+                            	</button>
+                            	 	
+                            	<!-- Block modal -->
+                            	<div class="modal fade" th:id="'delModal' + ${s.id}">
+	                            	<form th:action="@{/socialSellerBlock}">
+					                    <div class="modal-dialog">
+					                        <div class="modal-content">
+					
+					                            <!-- Modal Header -->
+					                            <div class="modal-header">
+					                                <h4 class="modal-title">Choose Block Time</h4>
+					                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+					                            </div>
+					                            <div class="modal-body">
+					                            	<input type="hidden" th:value="${s.email}" name="email">
+					                            	<select class="form-control" name="blockTime">
+														    <option value="0">Select Time</option>
+														    <option value="1">1 day</option>
+														    <option value="3">3 days</option>
+														    <option value="5">5 days</option>
+														    <option value="7">7 days</option>
+													 </select>
+					                            </div>
+					                            <!-- Modal footer -->
+					                            <div class="modal-footer">
+					                            	<button type="submit" class="btn btn-info">Block</button>
+					                                <button type="button" class="btn btn-danger"
+					                                    data-dismiss="modal">Close</button>
+					                                
+					                            </div>
+					                        </div>
+					                    </div>
+				                    </form>
+				                </div>
+				                
+				                <!-- Show info -->
+                            	<div class="modal fade" th:id="'showModal' + ${s.id}">
+					                    <div class="modal-dialog">
+					                        <div class="modal-content">
+					
+					                            <!-- Modal Header -->
+					                            <div class="modal-header">
+					                                <h4 class="modal-title">Seller Information</h4>
+					                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+					                            </div>
+					                            <div class="modal-body">
+						                            <div class="position-relative form-group"><label>Email</label>
+	                                                    	<input th:value="${s.email}" type="text" class="form-control" readonly>
+	                                                 </div>
+	                                                 <div class="position-relative form-group"><label>Full Name</label>
+	                                                    	<input th:value="${s.full_name}" type="text" class="form-control" readonly>
+	                                                 </div>
+	                                                 <div class="position-relative form-group"><label>Phone</label>
+	                                                    	<input th:value="${s.phone}" type="text" class="form-control" readonly>
+	                                                 </div>
+	                                                 <div class="position-relative form-group"><label>Address</label>
+	                                                    	<input th:value="${s.address}" type="text" class="form-control" readonly>
+	                                                 </div>
+	                                                 <div class="position-relative form-group"><label>Money</label>
+	                                                    	<input th:value="${s.money}" type="text" class="form-control" readonly>
+	                                                 </div>
+	                                                 <div class="position-relative form-group"><label>Level</label>
+	                                                    	<input th:value="${s.id_level}" type="text" class="form-control" readonly>
+	                                                 </div>
+	                                                 <div class="position-relative form-group"><label>Number of Posted</label>
+	                                                    	<input th:value="${s.num_posted}" type="text" class="form-control" readonly>
+	                                                 </div>
+	                                                 <div class="position-relative form-group"><label>Post Remain</label>
+	                                                    	<input th:value="${s.post_remain}" type="text" class="form-control" readonly>
+	                                                 </div>
+	                                                 <div class="position-relative form-group"><label>Reg Date</label>
+	                                                    	<input th:value="${#dates.format(s.reg_date, 'dd-MM-yyyy')}" type="text" class="form-control" readonly>
+	                                                 </div>
+	                                                 <div class="position-relative form-group"><label>Block to</label>
+	                                                    	<input th:value="${#dates.format(s.block_to, 'dd-MM-yyyy')}" type="text" class="form-control" readonly>
+	                                                 </div>
+					                            	
+					                            </div>
+					                            <!-- Modal footer -->
+					                            <div class="modal-footer">
+					                                <button type="button" class="btn btn-danger"
+					                                    data-dismiss="modal">Close</button>
+					                            </div>
+					                        </div>
+					                    </div>
+				                </div>
+				                
+				                
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+  <th:block th:include="/common/admin/footer"></th:block>  

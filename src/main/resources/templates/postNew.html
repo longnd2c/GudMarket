@@ -1,0 +1,379 @@
+<th:block th:include="/common/webapp/top"></th:block>  
+<th:block th:include="/common/webapp/navbar"></th:block>  
+<script>
+		document.title='GudMarket - New Post'
+</script>
+
+<!-- Title page -->
+	<section class="bg-img1 txt-center p-lr-15 p-tb-92" style="background-image: url('/webapp/images/bg-01.jpg');">
+		<h2 class="ltext-105 cl0 txt-center">
+			Post
+		</h2>
+	</section>	
+	
+	<!-- Content page -->
+	<form th:action="@{/doPost}" th:object="${post}" method="post" enctype="multipart/form-data" name="post_form" onsubmit="return validateForm()">
+		<section class="bg0 p-t-104 p-b-116">
+		
+			<div class="container">
+							<div th:if="${message}" class="alert alert-danger alert-dismissable" style="border-radius:0; text-align:center; margin-left:25px;margin-right:40px;">
+						         <i class="icon fa fa-ban"></i>
+						         <span th:text="${message}" style="position: relative; margin:0;">	
+						         </span>
+						         
+							</div>
+				<div class="flex-w flex-tr">
+					
+					<div class="size-210 bor10 p-lr-70 p-t-55 p-b-70 p-lr-15-lg w-full-md">
+					
+						<div class="flex-w w-full p-b-42">
+							<span class="fs-18 cl5 txt-center size-211">
+								<span class="lnr lnr-flag"></span>
+							</span>
+							<div class="size-212 p-t-2">
+								<span class="mtext-110 cl2">
+									Category
+								</span>
+								<div class="rs1-select2 bor8 bg0" style="margin-top: 10px">
+									<select id="select_cate" onchange="select()" class="js-select2 select2-hidden-accessible" name="category" tabindex="-1" aria-hidden="true">
+										<option value="default">Choose Category</option>
+										    <option th:each="category : ${listCategory}" th:value="${category.id_cate}" th:text="${category.cate_name}"></option>
+									</select>
+									<div class="dropDownSelect2"></div>
+								</div>
+							</div>
+						</div>
+
+						<div class="flex-w w-full p-b-42">
+							<span style="display: none;" id="type_icon" class="fs-18 cl5 txt-center size-211">
+								<span class="lnr lnr-flag"></span>
+							</span>
+							<div style="display: none;" id="type_text" class="size-212 p-t-2">
+								<span class="mtext-110 cl2">
+									Type
+								</span>
+								<div id="select_type1" class="rs1-select2 bor8 bg0" style="margin-top: 10px; display: none;">
+									<select id="type1" th:field="${post.type.id_type}" class="js-select2 select2-hidden-accessible" name="time" tabindex="-1" aria-hidden="true">
+										<option value="0">Choose Type</option>
+										<option th:each="type : ${listType1}" th:value="${type.id_type}" th:text="${type.type_name}"></option>
+									</select>
+									<div class="dropDownSelect2"></div>
+								</div>
+								<div id="select_type2" class="rs1-select2 bor8 bg0" style="margin-top: 10px; display: none;">
+									<select id="type2" th:field="${post.type.id_type}" class="js-select2 select2-hidden-accessible" name="time" tabindex="-1" aria-hidden="true">
+										<option value="0">Choose Type</option>
+										<option th:each="type : ${listType2}" th:value="${type.id_type}" th:text="${type.type_name}"></option>
+									</select>
+									<div class="dropDownSelect2"></div>
+								</div>
+								<div id="select_type3" class="rs1-select2 bor8 bg0" style="margin-top: 10px; display: none;">
+									<select id="type3" th:field="${post.type.id_type}" class="js-select2 select2-hidden-accessible" name="time" tabindex="-1" aria-hidden="true">
+										<option value="0">Choose Type</option>
+										<option th:each="type : ${listType3}" th:value="${type.id_type}" th:text="${type.type_name}"></option>
+									</select>
+									<div class="dropDownSelect2"></div>
+								</div>
+								<div id="select_type4" class="rs1-select2 bor8 bg0" style="margin-top: 10px; display: none;">
+									<select id="type4" th:field="${post.type.id_type}" class="js-select2 select2-hidden-accessible" name="time" tabindex="-1" aria-hidden="true">
+										<option value="0">Choose Type</option>
+										<option th:each="type : ${listType4}" th:value="${type.id_type}" th:text="${type.type_name}"></option>
+									</select>
+									<div class="dropDownSelect2"></div>
+								</div>
+								<div id="select_type5" class="rs1-select2 bor8 bg0" style="margin-top: 10px; display: none;">
+									<select id="type5" th:field="${post.type.id_type}" class="js-select2 select2-hidden-accessible" name="time" tabindex="-1" aria-hidden="true">
+										<option value="0">Choose Type</option>
+										<option th:each="type : ${listType5}" th:value="${type.id_type}" th:text="${type.type_name}"></option>
+									</select>
+									<div class="dropDownSelect2"></div>
+								</div>
+								<div id="select_type6" class="rs1-select2 bor8 bg0" style="margin-top: 10px; display: none;">
+									<select id="type6" th:field="${post.type.id_type}" class="js-select2 select2-hidden-accessible" name="time" tabindex="-1" aria-hidden="true">
+										<option value="0">Choose Type</option>
+										<option th:each="type : ${listType6}" th:value="${type.id_type}" th:text="${type.type_name}"></option>
+									</select>
+									<div class="dropDownSelect2"></div>
+								</div>
+								<div id="select_type7" class="rs1-select2 bor8 bg0" style="margin-top: 10px; display: none;">
+									<select id="type7" th:field="${post.type.id_type}" class="js-select2 select2-hidden-accessible" name="time" tabindex="-1" aria-hidden="true">
+										<option value="0">Choose Type</option>
+										<option th:each="type : ${listType7}" th:value="${type.id_type}" th:text="${type.type_name}"></option>
+									</select>
+									<div class="dropDownSelect2"></div>
+								</div>
+							</div>
+						</div>
+							<!-- <div class="block2" >
+								<div class="block2-pic hov-img0" id="wrapper">
+									<div class="wrap-slick3-dots" id="wrapper">
+									 <form action="upload_file.php" method="post" enctype="multipart/form-data">
+									  <input type="file" id="upload_file" name="upload_file[]" onchange="preview_image();" multiple/>
+									 </form>
+									
+									</div>
+									<div id="image_preview"></div>
+								</div>
+
+								<div class="block2-txt flex-w flex-t p-t-14">
+									
+								</div> -->
+						<div class="flex-w w-full p-b-42">
+							<span class="fs-18 cl5 txt-center size-211">
+								<span class="lnr lnr-picture"></span>
+							</span>
+							<div class="size-212 p-t-2">
+								<span class="mtext-110 cl2">
+									Product Image
+								</span>
+								<p class="stext-115 cl6 p-t-18">
+									<i>The first image will be used as the main image for display</i>
+								</p>		
+								<div class="container" style="margin-top: 10px;">
+									<div class="row isotope-grid" id="grid">
+										<div class="col-sm-6 col-md-6 p-b-35 isotope-item women imgfix">
+											<!-- Block2 -->
+											<div class="block2">
+												<div >
+														<input class="inputfile" type="file" id="upload_file1" name="upload_file[]" onchange="preview_image(1);" accept="image/*"/>
+														<div id="image_close1"></div>	
+														<label for="upload_file1" class="block2-pic hov-img0 labelfile" style="border: 1px solid #6c7ae0">
+															
+															<div id="image_preview1">
+																<img id="image_default1" src="/webapp/images/default-imgmain.png" alt="IMG-PRODUCT">
+															</div>
+														</label>
+
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-6 col-md-6 p-b-35 isotope-item women imgfix">
+											<!-- Block2 -->
+											<div class="block2">
+												<div >
+													<input class="inputfile" type="file" id="upload_file2" name="upload_file[]" onchange="preview_image(2);"/>
+													<div id="image_close2"></div>	
+													<label for="upload_file2" class="block2-pic hov-img0 labelfile" style="border: 1px solid #E6E6E6">	
+														<div id="image_preview2">
+															<img id="image_default2" src="/webapp/images/default-img.png" alt="IMG-PRODUCT">
+														</div>
+													</label>
+
+												</div>
+
+											</div>
+										</div>
+
+										<div class="col-sm-6 col-md-6 p-b-35 isotope-item men imgfix">
+											<!-- Block2 -->
+											<div class="block2">
+												<div >
+													<input class="inputfile" type="file" id="upload_file3" name="upload_file[]" onchange="preview_image(3);"/>
+													<div id="image_close3"></div>	
+													<label for="upload_file3" class="block2-pic hov-img0 labelfile" style="border: 1px solid #E6E6E6">	
+														<div id="image_preview3">
+															<img id="image_default3" src="/webapp/images/default-img.png" alt="IMG-PRODUCT">
+														</div>
+													</label>
+
+												</div>
+
+											</div>
+										</div>
+										<div class="col-sm-6 col-md-6 p-b-35 isotope-item men imgfix">
+											<!-- Block2 -->
+											<div class="block2">
+												<div >
+													<input class="inputfile" type="file" id="upload_file4" name="upload_file[]" onchange="preview_image(4);"/>
+													<div id="image_close4"></div>	
+													<label for="upload_file4" class="block2-pic hov-img0 labelfile" style="border: 1px solid #E6E6E6">	
+														<div id="image_preview4">
+															<img id="image_default4" src="/webapp/images/default-img.png" alt="IMG-PRODUCT">
+														</div>
+													</label>
+
+												</div>
+
+											</div>
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+				
+
+					<div class="size-210 bor10 p-lr-70 p-t-55 p-b-70 p-lr-15-lg w-full-md">
+					
+						<h4 class="mtext-105 cl2 txt-center p-b-30">
+							Post Detail
+						</h4>
+
+						<div class="rs1-select2 bor8 bg0">
+							<input th:field="*{title}" class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="name" placeholder="Post Tittle" required>
+						</div>
+
+						<div class="rs1-select2 bor8 bg0" style="margin-top: 10px">
+							<input th:field="*{price}" class="stext-111 cl8 plh3 size-111 p-lr-15" type="number" step="0.01" name="price" placeholder="Price" required>
+						</div>
+
+						<div class="rs1-select2 bor8 bg0" style="margin-top: 10px">
+							<input th:field="*{contact}" class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="contact" placeholder="Contact (Ex: Mail or Phone)" required>
+						</div>
+
+						<div class="bor8 m-b-30" style="margin-top: 10px">
+							<textarea th:field="*{description}" class="stext-111 cl2 plh3 size-120 p-lr-28 p-tb-25" name="description" placeholder="Description"></textarea>
+						</div>
+						<div class="mtext-105 cl2 txt-center p-b-30">					
+							<input id="cbx" type="checkbox" onclick="priority()" />
+							<label for="cbx" style="margin-top:-15px;">
+								<p class="stext-115 cl6" style="margin-left: -71%; line-height:1.15;">
+								Priority Post
+								</p>
+							</label>
+							
+							<div id="select_priority" class="rs1-select2 bor8 bg0" style="margin-top: 10px; text-align: left; display: none;">
+								<select id="choose_time" class="js-select2 select2-hidden-accessible" name="choose_time" tabindex="-1" aria-hidden="true">
+									<option value="default">Choose Time</option>
+									<option value="1">1 day - $1.0</option>
+									<option value="3">3 days - $3.0</option>
+									<option value="5">5 days - $5.0</option>
+									<option value="7">7 days - $7.0</option>
+								</select>
+								<div class="dropDownSelect2"></div>
+							</div>
+							
+								
+						</div>
+						
+							
+						  <!-- <input type="checkbox" id="post" name="post">
+						  <label for="post" class="mtext-110 cl2" >Post</label> -->
+						  	
+						<button type="submit" class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer" style="margin-top: 20px">
+							Post
+						</button>
+					</div>
+				
+			</div>
+			
+			</div>
+			
+		</section>	
+	</form>	
+	
+<script>	
+	function preview_image(number) 
+	{
+		var exist_image=document.getElementById("image"+number);
+		var url_image=URL.createObjectURL(event.target.files[0]);
+		var file=event.target.files[0];
+		var file_size= ((file.size/1024)/1024).toFixed(4); // MB
+		if(file_size>1){
+			alert("Image Size must be < 1MB");
+			$('#upload_file'+number).val('');
+		}
+		else{
+			
+			if(exist_image!=null&&url_image!=null)
+			{
+				exist_image.remove();
+				document.getElementById("close_icon"+number).remove();
+			}
+			if(url_image!=null)
+			{
+				$('#image_close'+number).append("<i id='close_icon"+number+"' onclick='remove_image("+number+")' class='fa fa-times' aria-hidden='true' style='cursor:pointer; margin-left:95%'></i>");
+				$('#image_preview'+number).append("<img id='image"+number+"' src='"+url_image+"' alt='IMG-PRODUCT'>");
+				document.getElementById("image_default"+number).style.display = "none";
+			}
+		}
+	
+	}
+	function remove_image(number)
+	{
+		document.getElementById("close_icon"+number).remove();
+		document.getElementById("image_default"+number).style.display = "block";
+		var existimage=document.getElementById("image"+number);
+		existimage.remove();
+		$('#upload_file'+number).val('');
+	
+	}
+	function change_option(number)
+	{
+		for(i=1;i<8;i++){
+			if(i==number){
+				document.getElementById("select_type"+i).style.display="block";
+			}
+			else{
+				document.getElementById("select_type"+i).style.display="none";
+			}
+		}
+	}
+	function select()
+	{
+		document.getElementById("type_icon").style.display="block";
+		document.getElementById("type_text").style.display="block";
+		var cate_value=document.getElementById("select_cate").value;
+		switch(cate_value)
+		{
+			case "C01":
+				change_option(1);
+				break;
+			case "C02":
+				change_option(2);
+				break;
+			case "C03":
+				change_option(3);
+				break;
+			case "C04":
+				change_option(4);
+				break;
+			case "C05":
+				change_option(5);
+				break;
+			case "C06":
+				change_option(6);
+				break;
+			case "C07":
+				change_option(7);
+				break;
+			case "default":
+				document.getElementById("type_icon").style.display="none";
+				document.getElementById("type_text").style.display="none";
+				break;
+		}
+	}
+	function priority()
+	{
+		if(document.getElementById("cbx").checked == false){
+			document.getElementById("select_priority").style.display="none";
+		}
+		else{
+			document.getElementById("select_priority").style.display="block";
+		}
+			
+	}
+	function validateForm()
+	{
+		var x = document.forms["post_form"]["category"].value;
+		if (x == "default") {
+			alert("You must choose Category of Post!");
+			return false;
+		}
+		var str="";
+		for(i=1;i<8;i++){
+			str=str+document.getElementById("type"+i).value;
+		}
+		if(str.length<8){
+			alert("You must choose Type of Post!");
+			return false;
+		}
+		if(document.getElementById("cbx").checked == true && document.getElementById("choose_time").value== "default"){
+			alert("You must choose Priority Time!");
+			return false;
+		}
+
+	}
+</script>
+<th:block th:include="/common/webapp/footer"></th:block>  

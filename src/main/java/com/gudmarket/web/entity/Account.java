@@ -11,6 +11,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "account")
@@ -35,8 +36,11 @@ public class Account {
 	  @Column(name = "phone")
 	  private String phone;
 	  
+	  @Column(name = "address")
+	  private String address;
+	  
 	  @Column(name = "money")
-	  private Integer money;
+	  private Double money;
 	  
 	  @Column(name = "id_level")
 	  private String id_level;
@@ -54,6 +58,14 @@ public class Account {
 	  
 	  @Column(name = "block_to")
 	  private Date block_to;
+	  
+	  @Column(name = "enabled")
+	  private boolean enabled;
+	  
+	  public Account() {
+		  super();
+		  this.enabled=false;
+	  }
 
 	public String getUsername() {
 		return username;
@@ -102,12 +114,21 @@ public class Account {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+	
 
-	public int getMoney() {
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public Double getMoney() {
 		return money;
 	}
 
-	public void setMoney(Integer money) {
+	public void setMoney(Double money) {
 		this.money = money;
 	}
 
@@ -150,9 +171,18 @@ public class Account {
 	public void setBlock_to(Date block_to) {
 		this.block_to = block_to;
 	}
+	
+	
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
 
 	public String toString() {
-		String str=this.username+this.full_name+this.id_level+this.email+this.phone+this.money+this.num_posted+this.post_remain+this.reg_date+this.block_to;
+		String str=this.username+this.full_name+this.address+this.id_level+this.email+this.phone+this.money+this.num_posted+this.post_remain+this.reg_date+this.block_to;
 		return str.toLowerCase();
 	}
 	  

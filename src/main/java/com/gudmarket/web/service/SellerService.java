@@ -10,6 +10,7 @@ import com.gudmarket.web.repository.AccountRepository;
 @Service
 public class SellerService {
 	
+	@Autowired
 	private AccountRepository accRepo;
 	@Autowired
 	public SellerService(AccountRepository accRepo) {
@@ -20,7 +21,7 @@ public class SellerService {
 		seller.setPassword(EncrytedPasswordUtils.encrytePassword(password));
 		seller.setId_level("L01");
 		seller.setRole(1);
-		seller.setMoney(0);
+		seller.setMoney((double) 0);
 		seller.setNum_posted(0);
 		seller.setPost_remain(3);
 		accRepo.save(seller);

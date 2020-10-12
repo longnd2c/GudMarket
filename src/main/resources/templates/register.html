@@ -1,0 +1,54 @@
+<th:block th:include="/common/admin/top"></th:block>  
+
+<script>
+	document.title='GudMarket - Register'
+</script>
+<div class="container">
+    <form name='f' th:action="@{/registration}" th:object="${user}" method="post" class="register-form">
+                      
+                        <h2>Register</h2>
+                        <p class="message"></p>
+                        <div>
+                          <div class="txtb">
+                            <input type="text" th:field="*{username}" pattern=".{6,15}" title="Username must have 6-15 characters" require="required">
+                            <span data-placeholder="Username"></span>
+                          </div>
+                          <div class="txtb">
+                            <input type="email" name="email" th:field="*{email}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Invalid input value. Example: example@gmail.com" require="required">
+                            <span data-placeholder="Email"></span>
+                          </div>
+                          <div class="txtb">
+                            <input type="password" id="password" th:field="*{password}" pattern=".{6,}" title="Password must have 6 or more characters" require="required">
+                            <span data-placeholder="Password"></span>
+                          </div>
+                          <div class="txtb">
+                            <input type="password" id="confirm_password" require="required">
+                            <span data-placeholder="Confirm Passowrd"></span>
+                          </div>
+                          <input type="submit" class="logbtn" id="btnlogin" value="Register" name="btnlogin">
+                          <input type="hidden" name="admin_login" value="1">
+                          <input th:field="*{enabled}" type="hidden">
+                          
+                          <div class="row" style="margin-top:20px;">
+						       <div class="col-md-12">
+						        <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" 
+						        	class="alert alert-danger alert-dismissable" style="border-radius:0;">
+						         <p style="position: relative; margin:0;">
+						          <i class="icon fa fa-ban"></i>
+						         </p>
+						        </div>
+						       </div>
+						  </div>
+						  
+						      
+                          <div class="bottom-login">
+                            <a th:href="@{/login}">Return Login page</a>
+                          </div>
+                        </div>
+                        
+                        
+                    
+                  </form>
+    </div>
+
+<th:block th:include="/common/admin/footer"></th:block>  

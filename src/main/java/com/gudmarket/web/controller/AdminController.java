@@ -2,6 +2,7 @@ package com.gudmarket.web.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -22,9 +23,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gudmarket.web.entity.Account;
 import com.gudmarket.web.entity.Post;
+import com.gudmarket.web.entity.SocialAccount;
 import com.gudmarket.web.entity.Type;
 import com.gudmarket.web.repository.AccountRepository;
 import com.gudmarket.web.repository.PostRepository;
+import com.gudmarket.web.repository.SocialAccountRepository;
 import com.gudmarket.web.repository.TypeRepository;
 import com.gudmarket.web.service.SellerService;
 import com.gudmarket.web.service.TypeService;
@@ -41,6 +44,8 @@ public class AdminController {
 	TypeRepository typeRepo;
 	@Autowired
 	TypeService typeService;
+	@Autowired
+	SocialAccountRepository socialAccRepo;
 	
 	@InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -52,58 +57,79 @@ public class AdminController {
 	
 	///////////////////////SELLER///////////////////////////////////////////
 	@RequestMapping("/seller-list")
-	  public String listAdmin(Model model) {
+	  public String listseller(Model model) {
+		Iterable<Account> list=accRepo.findSeller();
+		Date now = new Date();
+		Date block=null;
+		for(Account acc : list) {
+			block=acc.getBlock_to();
+			if(block!=null && block.before(now)) {
+				acc.setBlock_to(null);
+				accRepo.save(acc);
+			}
+		}
+		model.addAttribute("num_post", postRepo.findByStatus().size());
+	    model.addAttribute("listSeller", list);
+	    return "seller-list";
+	  }
+	
+	@RequestMapping("/socialSeller-list")
+	  public String listSocialseller(Model model) {
+		List<SocialAccount> list=socialAccRepo.findAll();
+		Date now = new Date();
+		Date block=null;
+		for(SocialAccount acc : list) {
+			block=acc.getBlock_to();
+			if(block!=null && block.before(now)) {
+				acc.setBlock_to(null);
+				socialAccRepo.save(acc);
+			}
+		}
+		model.addAttribute("num_post", postRepo.findByStatus().size());
+	    model.addAttribute("listSocialSeller", list);
+	    return "socialSeller-list";
+	  }
+	
+	@RequestMapping("/sellerBlock")
+	  public String blockseller(@RequestParam(value = "username") String username,@RequestParam(value = "blockTime") String blockTime ,Model model) {
+		Account acc=accRepo.findByUsername(username);
+		int date=Integer.parseInt(blockTime);
+		if(date==0) {
+			model.addAttribute("num_post", postRepo.findByStatus().size());
+			model.addAttribute("listSeller", accRepo.findSeller());
+		    return "seller-list";
+		}
+		Date dt = new Date();
+		Calendar c = Calendar.getInstance(); 
+		c.setTime(dt); 
+		c.add(Calendar.DATE, date);
+		dt = c.getTime();
+		acc.setBlock_to(dt);
+		accRepo.save(acc);
+		model.addAttribute("num_post", postRepo.findByStatus().size());
 	    model.addAttribute("listSeller", accRepo.findSeller());
 	    return "seller-list";
 	  }
 	
-	@RequestMapping("/seller-add")
-	  public String addSeller(Model model) {
-	    model.addAttribute("seller", new Account());
-	    return "seller-add";
-	  }
-	
-	@RequestMapping("/seller-update/{username}")
-	  public String updateTrainee(@PathVariable String username, Model model) {
-		Account seller = accRepo.findByUsername(username);
-		model.addAttribute("seller", seller);
-	    return "seller-update";
-	  }
-	@RequestMapping("/saveSeller") 
-	  public ModelAndView doSaveSeller(@ModelAttribute("seller") Account seller, BindingResult bindingResult, 
-			  			@RequestParam(value = "username") String username, @RequestParam(value ="password") String password) { 
-		  ModelAndView modelAndView=new ModelAndView();
-		  Account accExists = accRepo.findByUsername(username);
-	        if (accExists != null) {
-	        	bindingResult.rejectValue("username", "error.username","There is already a user registered with the Username provided");
-	        }
-	        if (bindingResult.hasErrors()) {
-	            modelAndView.setViewName("seller-add");
-	        }
-	        else {
-		  sellerService.saveSeller(seller, password);
-		  modelAndView.addObject("listSeller",accRepo.findSeller());
-		  modelAndView.setViewName("seller-list"); 
-	        }
-	  	
-	  	return modelAndView; 
-	  }
-	
-	@RequestMapping("/updateSeller")
-	  public ModelAndView doUpdateSeller(@ModelAttribute("seller") Account seller, BindingResult bindingResult) {  
-		  ModelAndView modelAndView=new ModelAndView();
-		  accRepo.save(seller);
-		  modelAndView.addObject("listSeller",accRepo.findSeller());
-		  modelAndView.setViewName("seller-list"); 
-	        return modelAndView;
-	  }
-	  
-	  @RequestMapping("/sellerDelete/{username}")
-	  public String doDeleteTrainee(@PathVariable String username, Model model) {
-		  accRepo.deleteById(username);
-		  
-	    model.addAttribute("listSeller",accRepo.findSeller());
-	    return "seller-list";
+	@RequestMapping("/socialSellerBlock")
+	  public String blockSocial(@RequestParam(value = "email") String email,@RequestParam(value = "blockTime") String blockTime ,Model model) {
+		SocialAccount socialAcc=socialAccRepo.findByEmail(email);
+		int date=Integer.parseInt(blockTime);
+		if(date==0) {
+			model.addAttribute("num_post", postRepo.findByStatus().size());
+			model.addAttribute("listSocialSeller", socialAccRepo.findAll());
+		    return "socialSeller-list";
+		}
+		Date dt = new Date();
+		Calendar c = Calendar.getInstance(); 
+		c.setTime(dt); 
+		c.add(Calendar.DATE, date);
+		dt = c.getTime();
+		socialAcc.setBlock_to(dt);
+		socialAccRepo.save(socialAcc);
+		model.addAttribute("num_post", postRepo.findByStatus().size());
+		model.addAttribute("listSocialSeller", socialAccRepo.findAll());
+	    return "socialSeller-list";
 	  }
 	  
 	  @RequestMapping("/searchSeller")
@@ -114,12 +140,26 @@ public class AdminController {
 				listSeller.add(seller);
 			}
 		}
+		model.addAttribute("num_post", postRepo.findByStatus().size());
 	    model.addAttribute("listSeller", listSeller);
 	    return "seller-list";
+	  }
+	  @RequestMapping("/searchSocialSeller")
+	  public String searchSocial(@RequestParam(value = "searchKey") String searchKey, Model model) {
+		List<SocialAccount> listSocialSeller = new ArrayList<SocialAccount>();
+		for(SocialAccount seller:socialAccRepo.findAll()) {
+			if(seller.toString().contains(searchKey)) {
+				listSocialSeller.add(seller);
+			}
+		}
+		model.addAttribute("num_post", postRepo.findByStatus().size());
+	    model.addAttribute("listSocialSeller", listSocialSeller);
+	    return "socialSeller-list";
 	  }
 	  ///////////////////////////////////POST///////////////////////////////////////////
 	  @RequestMapping("/post-list")
 	  public String listPost(Model model) {
+		  model.addAttribute("num_post", postRepo.findByStatus().size());
 	    model.addAttribute("listPost", postRepo.arrangeAllByStatus());
 	    return "post-list";
 	  }
@@ -127,6 +167,7 @@ public class AdminController {
 	  public String doDeletePost(@PathVariable String id, Model model) {
 		  postRepo.deleteById(id);
 		  
+		  model.addAttribute("num_post", postRepo.findByStatus().size());
 	    model.addAttribute("listPost",postRepo.arrangeAllByStatus());
 	    return "post-list";
 	  }
@@ -139,6 +180,7 @@ public class AdminController {
 				listPost.add(post);
 			}
 		}
+		model.addAttribute("num_post", postRepo.findByStatus().size());
 	    model.addAttribute("listPost", listPost);
 	    return "post-list";
 	  }
@@ -147,8 +189,9 @@ public class AdminController {
 		Optional<Post> post = postRepo.findById(id);
 		if (post.isPresent()) {
 			Post temp=post.get();
-			temp.setStatus(1);
+			temp.setStatus(true);
 			postRepo.save(temp);
+			model.addAttribute("num_post", postRepo.findByStatus().size());
 	        model.addAttribute("listPost", postRepo.arrangeAllByStatus());
 	     }
 	    return "post-list";
@@ -157,6 +200,7 @@ public class AdminController {
 	  @RequestMapping("/type-list")
 	  public String listType(Model model) {
 	    model.addAttribute("listType", typeRepo.findAll());
+	    model.addAttribute("num_post", postRepo.findByStatus().size());
 	    return "type-list";
 	  }
 	@RequestMapping("/type-add")
@@ -177,6 +221,7 @@ public class AdminController {
 	        }
 	        else {
 		  typeService.saveType(type,type_name);
+		  modelAndView.addObject("num_post", postRepo.findByStatus().size());
 		  modelAndView.addObject("listType",typeRepo.findAll());
 		  modelAndView.setViewName("type-list"); 
 	        }
@@ -185,7 +230,7 @@ public class AdminController {
 	@RequestMapping("/typeDelete/{id}")
 	  public String doDeleteType(@PathVariable String id, Model model) {
 		  typeRepo.deleteById(id);
-		  
+		  model.addAttribute("num_post", postRepo.findByStatus().size());
 	    model.addAttribute("listType", typeRepo.findAll());
 	    return "type-list";
 	  }
@@ -198,6 +243,7 @@ public class AdminController {
 				listType.add(type);
 			}
 		}
+		model.addAttribute("num_post", postRepo.findByStatus().size());
 	    model.addAttribute("listType", listType);
 	    return "type-list";
 	  }

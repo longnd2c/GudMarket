@@ -1,0 +1,107 @@
+<th:block th:include="/common/webapp/top"></th:block>  
+<th:block th:include="/common/webapp/navbar"></th:block>
+
+<script>
+		document.title='GudMarket - All Post';
+</script>
+
+<!-- Product -->
+	<div class="bg0 m-t-23 p-b-140">
+		<div class="container">
+							<div th:if="${message}" class="alert alert-success alert-dismissable" style="border-radius:0; text-align:center; margin-left:25px;margin-right:40px;">
+						         <i class="icon fa fa-check"></i>
+						         <span th:text="${message}" style="position: relative; margin:0;">	
+						         </span>
+						        						         
+							</div>
+			<div class="flex-w flex-sb-m p-b-52">
+				<div class="flex-w flex-l-m filter-tope-group m-tb-10">
+					<a th:href="@{/index}" class="stext-109 cl8 hov-cl1 trans-04">
+						Home
+						<i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+					</a>
+		
+					<span class="stext-109 cl4">
+						All Post of&nbsp;
+					</span>
+					
+					<span class="stext-109 cl4" style="color:#6c7ae0; font-family:Poppins-Medium;" th:text="${#request.userPrincipal.name.split('@')[0]}"></span>
+				</div>
+
+				<div class="flex-w flex-c-m m-tb-10">
+
+					<div class="flex-c-m stext-106 cl6 size-105 bor4 pointer hov-btn3 trans-04 m-tb-4 js-show-search">
+						<i class="icon-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-search"></i>
+						<i class="icon-close-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
+						Search
+					</div>
+				</div>
+				
+				<!-- Search product -->
+				<div class="dis-none panel-search w-full p-t-10 p-b-15">
+					<div class="bor8 dis-flex p-l-15">
+						<button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
+							<i class="zmdi zmdi-search"></i>
+						</button>
+
+						<input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="search-product" placeholder="Search">
+					</div>	
+				</div>
+			</div>
+			
+			<div class="row isotope-grid">
+				<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item" th:each="p : ${listPost}">
+					<!-- Block2 -->
+					<div class="block2">
+						<div class="block2-pic hov-img0" th:if="${p.img}!=null">
+							<img th:src="@{${p.img.split('@')[0]}}" alt="IMG-PRODUCT">
+						</div>
+						<div class="block2-pic hov-img0" th:if="${p.img}==null">
+							<img src="/webapp/images/default-img.png" alt="IMG-PRODUCT">
+						</div>
+
+						<div class="block2-txt flex-w flex-t p-t-14">
+							<div class="block2-txt-child1 flex-col-l ">
+							
+								<form th:action="@{/postdetail}" th:id="'post_form' + ${p.id_post}">
+							      <a th:text="${p.title}" href="#" th:id="'a_link' + ${p.id_post}" th:attr="onclick=|send_form('${p.id_post}')|" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+							      </a>
+							      <input type="hidden" name ="id_post" th:value="${p.id_post}"/>
+							    </form>						
+
+								<span th:text="${'$'+p.price}" class="stext-105 cl3">
+									
+								</span>
+								
+							</div>
+							<div th:if="${p.priority!=null}" class="block2-txt-child2 flex-r p-t-3"  style="display: flex; flex-wrap: wrap; justify-content:center;" >
+								<i style="color: #6c7ae0; font-size: 22px;" class="fas fa-award"></i>
+								<span class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6" style="font-size: 10px; color: #6c7ae0;">
+									Priority
+								</span>
+								
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+				
+				</div>
+
+			<!-- Load more -->
+			<div class="flex-c-m flex-w w-full p-t-45">
+				<a href="#" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04">
+					Load More
+				</a>
+			</div>
+		</div>
+	</div>
+	
+<script>
+function send_form(id_post) {
+    document.getElementById("post_form"+id_post).submit();
+}
+</script>
+
+<th:block th:include="/common/webapp/footer"></th:block>  

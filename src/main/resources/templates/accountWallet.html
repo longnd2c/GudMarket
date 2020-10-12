@@ -1,0 +1,63 @@
+<th:block th:include="/common/webapp/top"></th:block>  
+<th:block th:include="/common/webapp/navbar"></th:block>  
+
+<script>
+	document.title='GudMarket - Account Wallet';
+</script>
+
+<!-- Title page -->
+	<section class="bg-img1 txt-center p-lr-15 p-tb-92" style="background-image: url('/webapp/images/bg-01.jpg');">
+		<h2 class="ltext-105 cl0 txt-center">
+			Account Wallet
+		</h2>
+	</section>	
+
+
+	<!-- Content page -->
+	<form class="bg0 p-t-75 p-b-85" th:action="@{/pay}" th:object="${user}" method="post">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-10 col-lg-7 col-xl-5 m-lr-auto m-b-50">
+					<div class="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-40 m-lr-0-xl p-lr-15-sm">
+						<h4 class="mtext-109 cl2 p-b-30">
+							Account Balance
+						</h4>
+
+						<div class="flex-w flex-t bor12 p-b-13">
+							<div class="size-208">
+								<span class="stext-110 cl2">
+									Money:
+								</span>
+							</div>
+
+							<div class="size-209">
+								<span th:utext="'$'+${user.money}" class="mtext-110 cl2">
+									
+								</span>
+							</div>
+						</div>
+
+						<div class="flex-w flex-t p-t-30 p-b-30">
+							
+							<div class=""> <!--flex-w flex-m m-r-20 m-tb-5-->
+								<div class="" > <!--rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9-->
+									<h4 class="mtext-109 cl2 p-b-15">
+										Top Up
+									</h4>
+								</div>
+                            </div>
+                            <input class="size-111 bor8 stext-102 cl2 p-lr-20" id="price" type="number" min="0" step="0.01" required="true" name="price" placeholder="Enter the value you want to top up">
+						</div>
+
+						<button type="submit" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+                            <span style="font-size: 12px; ">Continue with </span>
+                            <i class="fa fa-paypal" style="font-size:20px; margin-left: 15px; margin-right: 5px;"></i>
+							<i style="font-weight: bold;">PayPal </i>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+
+<th:block th:include="/common/webapp/footer"></th:block>  

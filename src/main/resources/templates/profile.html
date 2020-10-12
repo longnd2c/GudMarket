@@ -1,0 +1,281 @@
+<th:block th:include="/common/webapp/top"></th:block>  
+<th:block th:include="/common/webapp/navbar"></th:block>  
+<script>
+		document.title='GudMarket - User Profile'
+</script>
+
+<!-- Title page -->
+	<section class="bg-img1 txt-center p-lr-15 p-tb-92" style="background-image: url('/webapp/images/bg-01.jpg');">
+		<h2 class="ltext-105 cl0 txt-center">
+			Profile
+		</h2>
+	</section>	
+
+
+	<!-- Content page -->
+	<section class="bg0 p-t-104 p-b-116" th:object="${user}">
+		<div class="container">
+			<div class="flex-w flex-tr">
+				<div class="size-210 bor10 p-lr-70 p-t-55 p-b-70 p-lr-15-lg w-full-md">
+
+					<div class="flex-w flex-t p-b-68">
+						<div class="wrap-pic-s size-109 bor0 of-hidden m-r-18 m-t-6" style="width: 80px; height: 80px;">
+							<img src="/webapp/images/avatar.jpg" alt="AVATAR">
+						</div>
+						<div>
+							<div class="flex-w flex-sb-m p-b-17" th:switch="${user.id_level}">
+								<span th:utext="${#request.userPrincipal.name.split('@')[0]}" class="mtext-107 cl2 p-r-20" style="margin-top: 30px; font-size: 20px;">
+									
+								</span>
+								<a th:case="'L01'" href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5" style="margin-top: 40px; margin-left: 10px;">
+									Normal
+								</a>
+								<a th:case="'L02'" href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5" style="margin-top: 40px; margin-left: 10px;">
+									Silver
+								</a>
+								<a th:case="'L03'" href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5" style="margin-top: 40px; margin-left: 10px;">
+									Gold
+								</a>
+								<a th:case="'L04'" href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5" style="margin-top: 40px; margin-left: 10px;">
+									Platinum
+								</a>
+								
+							</div>
+						</div>
+
+						<div class="flex-w w-full p-b-42" style="margin-top: 42px;">
+							<span class="fs-18 cl5 txt-center size-211">
+								<span class="lnr lnr-pencil"></span>
+							</span>
+	
+							<div class="size-212 p-t-2">
+								<span class="mtext-110 cl2">
+									Full Name
+								</span>
+	
+								<p th:utext="${user.full_name}" class="stext-115 cl6 size-213 p-t-18">
+									
+								</p>
+							</div>
+						</div>
+						<div class="flex-w w-full p-b-42">
+							<span class="fs-18 cl5 txt-center size-211">
+								<span class="lnr lnr-calendar-full"></span>
+							</span>
+	
+							<div class="size-212 p-t-2">
+								<span class="mtext-110 cl2">
+									Join Date
+								</span>
+	
+								<p th:utext="${#dates.format(user.reg_date, 'dd-MM-yyyy')}" class="stext-115 cl6 size-213 p-t-18">
+									
+								</p>
+							</div>
+						</div>
+	
+						<div class="flex-w w-full p-b-42">
+							<span class="fs-18 cl5 txt-center size-211">
+								<span class="lnr lnr-map-marker"></span>
+							</span>
+	
+							<div class="size-212 p-t-2">
+								<span class="mtext-110 cl2">
+									Address
+								</span>
+	
+								<p th:utext="${user.address}" class="stext-115 cl6 size-213 p-t-18">
+									
+								</p>
+							</div>
+						</div>
+	
+						<div class="flex-w w-full p-b-42">
+							<span class="fs-18 cl5 txt-center size-211">
+								<span class="lnr lnr-phone-handset"></span>
+							</span>
+	
+							<div class="size-212 p-t-2">
+								<span class="mtext-110 cl2">
+									Phone
+								</span>
+	
+								<p th:utext="${user.phone}" class="stext-115 cl1 size-213 p-t-18">
+									
+								</p>
+							</div>
+						</div>
+	
+						<div class="flex-w w-full">
+							<span class="fs-18 cl5 txt-center size-211">
+								<span class="lnr lnr-envelope"></span>
+							</span>
+	
+							<div class="size-212 p-t-2">
+								<span class="mtext-110 cl2">
+									Email
+								</span>
+	
+								<p th:utext="${user.email}" class="stext-115 cl1 size-213 p-t-18">
+									
+								</p>
+							</div>
+						</div>
+						
+					</div>
+					<div>
+						<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail" style="margin-left: 31.83%;">
+							Edit Profile
+						</button>
+					</div>
+				</div>
+
+				<div class="size-210 bor10 flex-w flex-col-m p-lr-93 p-tb-30 p-lr-15-lg w-full-md">
+					<div class="flex-w w-full">
+						<span class="fs-18 cl5 txt-center size-211" style="color: #717fe0;">
+							<span class="lnr lnr-database"></span>
+						</span>
+						<div class="size-212 p-t-2" style="margin-bottom: 20px;">
+							<span class="mtext-110 cl2" style="color: #717fe0;">
+								Money:
+								<span th:utext="'$'+${user.money}" class="mtext-110 cl2" style="color: #717fe0;">
+								</span>
+
+							</span>
+						</div>
+						
+					</div>
+					<div>
+						<a th:href="@{/accountwallet}" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail" style="margin-left: 31.83%; margin-right:31.83%; margin-bottom: 42px;">
+							Top Up
+						</a>
+					</div>
+
+					<div class="flex-w w-full">
+						<span class="fs-18 cl5 txt-center size-211">
+							<span class="lnr lnr-license"></span>
+						</span>
+
+						<div class="size-212 p-t-2" th:switch="${user.id_level}">
+							<span class="mtext-110 cl2">
+								Account Level
+							</span>
+
+							<p class="stext-115 cl6 size-213 p-t-18">
+								<span th:case="'L01'" class="lnr lnr-checkmark-circle"> </span>
+								Normal
+							</p>
+							<p class="stext-115 cl6 size-213 p-t-18" style="margin-left: 21px;">
+								<span th:case="'L02'" class="lnr lnr-checkmark-circle"> </span>
+								Silver
+							</p>
+							<p class="stext-115 cl6 size-213 p-t-18" style="margin-left: 21px;">
+								<span th:case="'L03'" class="lnr lnr-checkmark-circle"> </span>
+								Gold
+							</p>
+							<p class="stext-115 cl6 size-213 p-t-18" style="margin-left: 21px; margin-bottom: 20px;">
+								<span th:case="'L04'" class="lnr lnr-checkmark-circle"> </span>
+								Platinum
+							</p>
+						</div>
+					</div>
+					<div>
+						<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail" style="margin-left: 31.83%; margin-bottom: 42px;">
+							Upgrade
+						</button>
+					</div>
+
+					<div class="flex-w w-full">
+						<span class="fs-18 cl5 txt-center size-211">
+							<span class="lnr lnr-file-empty"></span>
+						</span>
+
+						<div class="size-212 p-t-2">
+							<span class="mtext-110 cl2">
+								Post
+							</span>
+
+							<p class="stext-115 cl6 size-213 p-t-18">
+								Num of Posted: <span th:utext="${user.num_posted}" class="stext-115 cl6 size-213 p-t-18"></span>
+								<a th:href="@{/allSellerPost}" class="stext-101 cl2 hov-cl1 trans-04 m-tb-10" style="margin-left: 20px;">
+									Show All
+								</a>
+							</p>
+							
+							<p class="stext-115 cl6 size-213 p-t-18">
+								Post Remaining: <span th:utext="${user.post_remain}" class="stext-115 cl6 size-213 p-t-18"></span>
+								<a th:href="@{/postNew}" class="stext-101 cl2 hov-cl1 trans-04 m-tb-10" style="margin-left: 20px;">
+									Post
+								</a>
+							</p>
+							<!--
+							<p class="stext-115 cl6 size-213 p-t-18" style="margin-bottom: 20px;">
+								New Posted:
+							</p>
+							<div class="container">
+								<div class="row isotope-grid">
+									<div class="col-sm-6 col-md-4 p-b-35 isotope-item" th:each="p : ${listPost}">
+										 
+										<div class="block2">
+											<div class="block2-pic hov-img0" th:if="${p.img}!=null">
+												<img th:src="@{${p.img.split('@')[0]}}" alt="IMG-PRODUCT">
+											</div>
+											<div class="block2-pic hov-img0" th:if="${p.img}==null">
+												<img src="/webapp/images/default-img.png" alt="IMG-PRODUCT">
+											</div>
+					
+											<div class="block2-txt flex-w flex-t p-t-14">
+												<div class="block2-txt-child1 flex-col-l ">
+												
+													<form th:action="@{/postdetail}" th:id="'post_form' + ${p.id_post}">
+												      <a th:text="${p.title}" href="#" th:id="'a_link' + ${p.id_post}" th:attr="onclick=|send_form('${p.id_post}')|" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+												      </a>
+												      <input type="hidden" name ="id_post" th:value="${p.id_post}"/>
+												    </form>						
+					
+													<span th:text="${'$'+p.price}" class="stext-105 cl3">
+														
+													</span>
+													
+												</div>
+					
+											</div>
+										</div>
+									</div>
+									
+								</div>
+							</div>-->
+							<div>
+						<a th:href="@{/postManage}" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail" style="margin-left: 31.83%; margin-top:20px; margin-right:31.83%; margin-bottom: 42px;">
+							Post Manage
+						</a>
+					</div>
+							
+						</div>
+					</div>
+					<!--
+					<div class="container">
+						<div class="row">
+							<div class="col-md-6 p-b-30 m-lr-auto">
+								<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
+									Post
+								</button>
+							</div>
+							<div>
+								<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
+									All Posted
+								</button>
+							</div>
+						</div>
+					</div>
+					-->
+				</div>
+			</div>
+		</div>
+	</section>	
+<script>
+function send_form(id_post) {
+    document.getElementById("post_form"+id_post).submit();
+}
+</script>
+<th:block th:include="/common/webapp/footer"></th:block>  
