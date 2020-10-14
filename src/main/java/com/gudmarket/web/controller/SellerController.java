@@ -204,20 +204,35 @@ public class SellerController {
 	  public String sellerprofile(Model model, Principal principal, @RequestParam("username") String username) {
 		try {
 			service.checkUser(model, principal);
+			User loginedUser = (User) ((Authentication) principal).getPrincipal();
+			if(username==loginedUser.getUsername()) {
+				return "redirect:/profile";
+			}
+			else {
+				if(username.contains("@")) {
+					model.addAttribute("post_user",socialAccRepo.findByEmail(username));
+				}
+				else {
+					model.addAttribute("post_user",accRepo.findByUsername(username));
+				}
+				model.addAttribute("listPost", postRepo.findSellerNewPost(username));
+				model.addAttribute("username", username.split("@")[0]);
+				model.addAttribute("username_origin", username);
+			    return "seller";
+			}
 		}
 		catch(Exception e){
 			if(username.contains("@")) {
-				model.addAttribute("user",socialAccRepo.findByEmail(username));
+				model.addAttribute("post_user",socialAccRepo.findByEmail(username));
 			}
 			else {
-				model.addAttribute("user",accRepo.findByUsername(username));
+				model.addAttribute("post_user",accRepo.findByUsername(username));
 			}
 			model.addAttribute("listPost", postRepo.findSellerNewPost(username));
 			model.addAttribute("username", username.split("@")[0]);
 			model.addAttribute("username_origin", username);
 			return "seller";
 		}
-      return "redirect:/profile";
 	  }
 	
 	@RequestMapping("/postManage")

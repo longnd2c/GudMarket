@@ -13,7 +13,7 @@
 
 
 	<!-- Content page -->
-	<section class="bg0 p-t-104 p-b-116" th:object="${user}">
+	<section class="bg0 p-t-104 p-b-116" th:object="${post_user}">
 		<div class="container">
 			<div class="flex-w flex-tr">
 				<div class="size-210 bor10 p-lr-70 p-t-55 p-b-70 p-lr-15-lg w-full-md">
@@ -23,7 +23,7 @@
 							<img src="/webapp/images/avatar.jpg" alt="AVATAR">
 						</div>
 						<div>
-							<div class="flex-w flex-sb-m p-b-17" th:switch="${user.id_level}">
+							<div class="flex-w flex-sb-m p-b-17" th:switch="${post_user.id_level}">
 								<span th:utext="${username}" class="mtext-107 cl2 p-r-20" style="margin-top: 30px; font-size: 20px;">
 									
 								</span>
@@ -53,7 +53,7 @@
 									Full Name
 								</span>
 	
-								<p th:utext="${user.full_name}" class="stext-115 cl6 size-213 p-t-18">
+								<p th:utext="${post_user.full_name}" class="stext-115 cl6 size-213 p-t-18">
 									
 								</p>
 							</div>
@@ -68,7 +68,7 @@
 									Join Date
 								</span>
 	
-								<p th:utext="${#dates.format(user.reg_date, 'dd-MM-yyyy')}" class="stext-115 cl6 size-213 p-t-18">
+								<p th:utext="${#dates.format(post_user.reg_date, 'dd-MM-yyyy')}" class="stext-115 cl6 size-213 p-t-18">
 									
 								</p>
 							</div>
@@ -84,7 +84,7 @@
 									Address
 								</span>
 	
-								<p th:utext="${user.address}" class="stext-115 cl6 size-213 p-t-18">
+								<p th:utext="${post_user.address}" class="stext-115 cl6 size-213 p-t-18">
 									
 								</p>
 							</div>
@@ -100,7 +100,7 @@
 									Phone
 								</span>
 	
-								<p th:utext="${user.phone}" class="stext-115 cl1 size-213 p-t-18">
+								<p th:utext="${post_user.phone}" class="stext-115 cl1 size-213 p-t-18">
 									
 								</p>
 							</div>
@@ -116,7 +116,7 @@
 									Email
 								</span>
 	
-								<p th:utext="${user.email}" class="stext-115 cl1 size-213 p-t-18">
+								<p th:utext="${post_user.email}" class="stext-115 cl1 size-213 p-t-18">
 									
 								</p>
 							</div>
@@ -138,7 +138,7 @@
 							</span>
 
 							<p class="stext-115 cl6 size-213 p-t-18">
-								Num of Posted: <span th:utext="${user.num_posted}" class="stext-115 cl6 size-213 p-t-18"></span>
+								Num of Posted: <span th:utext="${post_user.num_posted}" class="stext-115 cl6 size-213 p-t-18"></span>
 							</p>								
 							
 							<p class="stext-115 cl6 size-213 p-t-18" style="margin-bottom: 20px;">
