@@ -17,118 +17,147 @@
 		<div class="container">
 			<div class="flex-w flex-tr">
 				<div class="size-210 bor10 p-lr-70 p-t-55 p-b-70 p-lr-15-lg w-full-md">
-
-					<div class="flex-w flex-t p-b-68">
-						<div class="wrap-pic-s size-109 bor0 of-hidden m-r-18 m-t-6" style="width: 80px; height: 80px;">
-							<img src="/webapp/images/avatar.jpg" alt="AVATAR">
+					<form th:action="@{/updateProfile}" method="post">
+						<div class="flex-w flex-t p-b-68">
+							<div class="wrap-pic-s size-109 bor0 of-hidden m-r-18 m-t-6" style="width: 80px; height: 80px;">
+								<img src="/webapp/images/avatar.jpg" alt="AVATAR">
+							</div>
+							<div>
+								<div class="flex-w flex-sb-m p-b-17" th:switch="${user.id_level}">
+									<span th:utext="${#request.userPrincipal.name.split('@')[0]}" class="mtext-107 cl2 p-r-20" style="margin-top: 30px; font-size: 20px;">
+										
+									</span>
+									<a th:case="'L01'" href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5" style="margin-top: 40px; margin-left: 10px;">
+										Normal
+									</a>
+									<a th:case="'L02'" href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5" style="margin-top: 40px; margin-left: 10px;">
+										Silver
+									</a>
+									<a th:case="'L03'" href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5" style="margin-top: 40px; margin-left: 10px;">
+										Gold
+									</a>
+									<a th:case="'L04'" href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5" style="margin-top: 40px; margin-left: 10px;">
+										Platinum
+									</a>
+									
+								</div>
+							</div>
+	
+							<div class="flex-w w-full p-b-42" style="margin-top: 42px;">
+								<span class="fs-18 cl5 txt-center size-211">
+									<span class="lnr lnr-pencil"></span>
+								</span>
+		
+								<div class="size-212 p-t-2">
+									<span class="mtext-110 cl2">
+										Full Name
+									</span>
+									
+									<div class="rs1-select2 bor8 bg0" style="margin-top:18px; display:none;" id="inputName">
+										<input th:value="${user.full_name}" class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="fullName" placeholder="Full Name">
+									</div>
+									
+									<p th:utext="${user.full_name}" class="stext-115 cl6 size-213 p-t-18" id="textName">
+										
+									</p>
+								</div>
+							</div>
+							
+							<div class="flex-w w-full p-b-42">
+								<span class="fs-18 cl5 txt-center size-211">
+									<span class="lnr lnr-map-marker"></span>
+								</span>
+		
+								<div class="size-212 p-t-2">
+									<span class="mtext-110 cl2">
+										Address
+									</span>
+									
+									<div class="rs1-select2 bor8 bg0" style="margin-top:18px; display:none;" id="inputAddress">
+										<input th:value="${user.address}" class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="address" placeholder="Address" >
+									</div>
+									
+									<p th:utext="${user.address}" class="stext-115 cl6 size-213 p-t-18" id="textAddress">
+										
+									</p>
+								</div>
+							</div>
+		
+							<div class="flex-w w-full p-b-42">
+								<span class="fs-18 cl5 txt-center size-211">
+									<span class="lnr lnr-phone-handset"></span>
+								</span>
+		
+								<div class="size-212 p-t-2">
+									<span class="mtext-110 cl2">
+										Phone
+									</span>
+									
+									<div class="rs1-select2 bor8 bg0" style="margin-top:18px; display:none;" id="inputPhone">
+										<input th:value="${user.phone}" class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="phone" placeholder="Phone Number">
+									</div>
+									
+									<p th:utext="${user.phone}" class="stext-115 cl1 size-213 p-t-18" id="textPhone">
+										
+									</p>
+								</div>
+							</div>
+		
+							<div class="flex-w w-full p-b-42">
+								<span class="fs-18 cl5 txt-center size-211">
+									<span class="lnr lnr-envelope"></span>
+								</span>
+		
+								<div class="size-212 p-t-2">
+									<span class="mtext-110 cl2">
+										Email
+									</span>
+											
+									<p th:utext="${user.email}" class="stext-115 cl1 size-213 p-t-18">
+										
+									</p>
+								</div>
+							</div>
+							
+							<div class="flex-w w-full">
+								<span class="fs-18 cl5 txt-center size-211">
+									<span class="lnr lnr-calendar-full"></span>
+								</span>
+		
+								<div class="size-212 p-t-2">
+									<span class="mtext-110 cl2">
+										Join Date
+									</span>
+		
+									<p th:utext="${#dates.format(user.reg_date, 'dd-MM-yyyy')}" class="stext-115 cl6 size-213 p-t-18">
+										
+									</p>
+								</div>
+							</div>
+							
 						</div>
 						<div>
-							<div class="flex-w flex-sb-m p-b-17" th:switch="${user.id_level}">
-								<span th:utext="${#request.userPrincipal.name.split('@')[0]}" class="mtext-107 cl2 p-r-20" style="margin-top: 30px; font-size: 20px;">
-									
-								</span>
-								<a th:case="'L01'" href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5" style="margin-top: 40px; margin-left: 10px;">
-									Normal
+							<div style="display:flex; flex-wrap: wrap;" id="editButton">
+								<button type="button" onclick="showEditForm()" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail" th:style="${#request.userPrincipal.name.contains('@') ? 'margin-left:31.83%' : 'margin-left:15%'}">
+									Edit Profile
+								</button>
+								<a th:if="${!#request.userPrincipal.name.contains('@')}" th:href="@{/changePassword}" id="editButton" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail" style="margin-left: 15%;">
+									Change Password
 								</a>
-								<a th:case="'L02'" href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5" style="margin-top: 40px; margin-left: 10px;">
-									Silver
+							</div>
+							<div style="display:none;flex-wrap: wrap;" id="editFormButton">
+								<button type="submit" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail" style="margin-left: 15%; margin-right:0;">
+									Edit
+								</button>
+								<a th:href="@{/profile}" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail" style="margin-left: 15%">
+									Cancel
 								</a>
-								<a th:case="'L03'" href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5" style="margin-top: 40px; margin-left: 10px;">
-									Gold
-								</a>
-								<a th:case="'L04'" href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5" style="margin-top: 40px; margin-left: 10px;">
-									Platinum
-								</a>
-								
 							</div>
+							
 						</div>
-
-						<div class="flex-w w-full p-b-42" style="margin-top: 42px;">
-							<span class="fs-18 cl5 txt-center size-211">
-								<span class="lnr lnr-pencil"></span>
-							</span>
-	
-							<div class="size-212 p-t-2">
-								<span class="mtext-110 cl2">
-									Full Name
-								</span>
-	
-								<p th:utext="${user.full_name}" class="stext-115 cl6 size-213 p-t-18">
-									
-								</p>
-							</div>
-						</div>
-						<div class="flex-w w-full p-b-42">
-							<span class="fs-18 cl5 txt-center size-211">
-								<span class="lnr lnr-calendar-full"></span>
-							</span>
-	
-							<div class="size-212 p-t-2">
-								<span class="mtext-110 cl2">
-									Join Date
-								</span>
-	
-								<p th:utext="${#dates.format(user.reg_date, 'dd-MM-yyyy')}" class="stext-115 cl6 size-213 p-t-18">
-									
-								</p>
-							</div>
-						</div>
-	
-						<div class="flex-w w-full p-b-42">
-							<span class="fs-18 cl5 txt-center size-211">
-								<span class="lnr lnr-map-marker"></span>
-							</span>
-	
-							<div class="size-212 p-t-2">
-								<span class="mtext-110 cl2">
-									Address
-								</span>
-	
-								<p th:utext="${user.address}" class="stext-115 cl6 size-213 p-t-18">
-									
-								</p>
-							</div>
-						</div>
-	
-						<div class="flex-w w-full p-b-42">
-							<span class="fs-18 cl5 txt-center size-211">
-								<span class="lnr lnr-phone-handset"></span>
-							</span>
-	
-							<div class="size-212 p-t-2">
-								<span class="mtext-110 cl2">
-									Phone
-								</span>
-	
-								<p th:utext="${user.phone}" class="stext-115 cl1 size-213 p-t-18">
-									
-								</p>
-							</div>
-						</div>
-	
-						<div class="flex-w w-full">
-							<span class="fs-18 cl5 txt-center size-211">
-								<span class="lnr lnr-envelope"></span>
-							</span>
-	
-							<div class="size-212 p-t-2">
-								<span class="mtext-110 cl2">
-									Email
-								</span>
-	
-								<p th:utext="${user.email}" class="stext-115 cl1 size-213 p-t-18">
-									
-								</p>
-							</div>
-						</div>
-						
-					</div>
-					<div>
-						<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail" style="margin-left: 31.83%;">
-							Edit Profile
-						</button>
-					</div>
+					</form>
 				</div>
+				
 
 				<div class="size-210 bor10 flex-w flex-col-m p-lr-93 p-tb-30 p-lr-15-lg w-full-md">
 					<div class="flex-w w-full">
@@ -180,9 +209,9 @@
 						</div>
 					</div>
 					<div>
-						<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail" style="margin-left: 31.83%; margin-bottom: 42px;">
+						<a th:href="@{/upgrade}" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail" style="margin-left: 31.83%; margin-right:31.83%; margin-bottom: 42px;">
 							Upgrade
-						</button>
+						</a>
 					</div>
 
 					<div class="flex-w w-full">
@@ -276,6 +305,16 @@
 <script>
 function send_form(id_post) {
     document.getElementById("post_form"+id_post).submit();
+}
+function showEditForm(){
+	document.getElementById("inputName").style.display="block";
+	document.getElementById("textName").style.display="none";
+	document.getElementById("inputAddress").style.display="block";
+	document.getElementById("textAddress").style.display="none";
+	document.getElementById("inputPhone").style.display="block";
+	document.getElementById("textPhone").style.display="none";
+	document.getElementById("editFormButton").style.display="flex";
+	document.getElementById("editButton").style.display="none";
 }
 </script>
 <th:block th:include="/common/webapp/footer"></th:block>  

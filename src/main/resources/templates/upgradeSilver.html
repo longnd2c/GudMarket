@@ -20,8 +20,14 @@
 		
 
 	<!-- Shoping Cart -->
-	<form class="bg0 p-t-75 p-b-85">
+	<form class="bg0 p-t-75 p-b-85" th:action="@{/doUpgradeSilver}" method="post" onsubmit="return validateForm()"> 
 		<div class="container">
+							<div th:if="${message}" class="alert alert-success alert-dismissable" style="border-radius:0; text-align:center; margin-left:25px;margin-right:40px;">
+						         <i class="icon fa fa-check"></i>
+						         <span th:text="${message}" style="position: relative; margin:0;">	
+						         </span>
+						        						         
+							</div>
 			<div class="row">
 				<div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
 					<div class="m-l-25 m-r--38 m-lr-0-xl">
@@ -86,20 +92,21 @@
 				<div class="col-sm-10 col-lg-7 col-xl-5 m-lr-auto m-b-50">
 					<div class="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-40 m-lr-0-xl p-lr-15-sm">
 						<h4 class="mtext-109 cl2 p-b-30">
-							Cart Totals
+							Your Account
 						</h4>
 
 						<div class="flex-w flex-t bor12 p-b-13">
 							<div class="size-208">
 								<span class="stext-110 cl2">
-									Subtotal:
+									Money:
 								</span>
 							</div>
 
 							<div class="size-209">
-								<span class="mtext-110 cl2">
-									$79.65
-								</span>
+								<span th:utext="'$'+${user.money}" class="mtext-110 cl2">
+										
+	                                </span>
+	                                <input type="hidden" id="money" th:value="${user.money}">
 							</div>
 						</div>
 
@@ -112,15 +119,15 @@
 									</h4>
 									<div class="size-204 respon6-next">
 										<div class="rs1-select2 bor8 bg0">
-											<select class="js-select2 select2-hidden-accessible" name="time" tabindex="-1" aria-hidden="true">
-												<option>Choose years dcmm</option>
-												<option>1 year - xx$</option>
-												<option>2 years - xx$</option>
-												<option>3 years - xx$</option>
-												<option>5 years - xx$</option>
+											<select class="js-select2 select2-hidden-accessible" onchange="select(this)" id="buy_money" name="buy_money" tabindex="-1" aria-hidden="true">
+												<option value="default">Choose time</option>
+												<option value="59.9">3 months - 59.9$</option>
+												<option value="99.9">6 months - 99.9$</option>
+												<option value="149.9">12 months - 149.9$</option>
 											</select>
 											<div class="dropDownSelect2"></div>
 										</div>
+										<input type="hidden" id="num_time" name="num_time">
 									</div>
 	
 								</div>
@@ -130,24 +137,63 @@
 						<div class="flex-w flex-t p-t-27 p-b-33">
 							<div class="size-208">
 								<span class="mtext-101 cl2">
-									Total:
+									Money left:
 								</span>
 							</div>
 
 							<div class="size-209 p-t-1">
-								<span class="mtext-110 cl2">
-									$79.65
+								<span th:utext="'$'+${user.money}" class="mtext-110 cl2" id="money_left">
 								</span>
+								<i id="sub" class="mtext-110 cl2" style="font-size: 12px;"></i>
 							</div>
 						</div>
 
-						<a th:href="@{/checkout}" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+						<button type="submit" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
 							Proceed to Checkout
-						</a>
+						</button>
 					</div>
 				</div>
 			</div>
 		</div>
 	</form>
 
+<script>
+function select(sel){
+    var money=sel.value;
+    if(money!="default"){
+        var x = document.getElementById("money").value-money;
+        x="$" +x;
+        document.getElementById("money_left").innerHTML=x;
+        document.getElementById("sub").innerHTML=" ("+document.getElementById("money").value+" - "+money+")";
+        
+        switch(money){
+        case "59.9":
+        	document.getElementById("num_time").value=3;
+        	break;
+        case "99.9":
+        	document.getElementById("num_time").value=6;
+        	break;
+        case "149.9":
+        	document.getElementById("num_time").value=12;
+        	break;
+        }
+    }
+    else{
+        var x = document.getElementById("money").value;
+        x="$"+x;
+        document.getElementById("money_left").innerHTML=x;
+        document.getElementById("sub").innerHTML="";
+    }
+    
+}
+function validateForm()
+{
+	var x = document.getElementById("buy_money").value;
+	if (x == "default") {
+		alert("You must choose Time!");
+		return false;
+	}
+
+}
+</script>
 <th:block th:include="/common/webapp/footer"></th:block>  

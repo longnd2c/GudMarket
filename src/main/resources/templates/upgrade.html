@@ -4,6 +4,19 @@
 		document.title='GudMarket - Upgrade Account'
 </script>
 
+<!-- breadcrumb -->
+	<div class="container">
+		<div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+			<a th:href="@{/index}" class="stext-109 cl8 hov-cl1 trans-04">
+				Home
+				<i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+			</a>
+
+			<span class="stext-109 cl4">
+				Upgrade Account
+			</span>
+		</div>
+	</div>
 <!-- Upgrade -->
 	<form class="bg0 p-t-75 p-b-85">
 		<div class="container">
@@ -58,7 +71,7 @@
 								</p>
 							</div>
 						</div>
-						<a href="upgradeSilver.html" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+						<a th:href="@{/upgradeSilver}" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
 							Upgrade
 						</a>
 					</div>
@@ -116,7 +129,7 @@
 						</div>
 
 
-						<a href="upgradeGold.html" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+						<a th:href="@{/upgradeGold}" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
 							Upgrade
 						</a>
 					</div>
@@ -171,7 +184,7 @@
 							</div>
 						</div>
 
-						<a href="upgradePlatinum.html" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+						<a th:href="@{/upgradePlatinum}" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
 							Upgrade
 						</a>
 					</div>

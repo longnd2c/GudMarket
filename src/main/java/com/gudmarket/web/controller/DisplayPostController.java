@@ -2,7 +2,9 @@ package com.gudmarket.web.controller;
 
 import java.security.Principal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletRequest;
@@ -85,5 +87,76 @@ public class DisplayPostController {
 		model.addAttribute("listPost",postRepo.findSellerAllPost(username));
 		model.addAttribute("username", username.split("@")[0]);
 		return "sellerAllPost";
+	  }
+	
+	@RequestMapping("/searchAllPost")
+	  public String searchAllPost(@RequestParam(value = "searchKey") String searchKey, Model model, Principal principal) {
+		List<Post> listPost = new ArrayList<Post>();
+		try {
+			for(Post post:postRepo.findAllByPriorityDate()) {
+				if(post.toString().contains(searchKey)) {
+					listPost.add(post);
+				}
+			}
+			model.addAttribute("listPost", listPost);
+			service.checkUser(model, principal);
+		}
+		catch(Exception e){
+			model.addAttribute("listPost",listPost);
+			return "allPost";
+		}    
+	    return "allPost";
+	  }
+	
+	@RequestMapping("/filterAllPost")
+	  public String filterAllPost(@RequestParam(value = "type") String type, @RequestParam(value = "sort") String sort,
+			  					@RequestParam(value = "rangePrimary") String range , Model model, Principal principal) {
+		try {
+			List<Post> listPost = new ArrayList<Post>();
+			String []price=range.split(";");
+			String minPrice=price[0];
+			String maxPrice=price[1];
+			if (maxPrice.equals("1000")) {
+				maxPrice="9999999999999999";
+			}
+			if(type.equals("all")) {
+				switch(sort) {
+				case "default":
+					listPost=postRepo.findFilter(minPrice, maxPrice);
+					break;
+				case "new":
+					listPost=postRepo.findFilter(minPrice, maxPrice);
+					break;
+				case "low":
+					listPost=postRepo.findFilterPriceASC(minPrice, maxPrice);
+					break;
+				case "high":
+					listPost=postRepo.findFilterPriceDESC(minPrice, maxPrice);
+					break;
+				}
+			}
+			else {
+				switch(sort) {
+				case "default":
+					listPost=postRepo.findFilterType(type, minPrice, maxPrice);
+					break;
+				case "new":
+					listPost=postRepo.findFilterType(type, minPrice, maxPrice);
+					break;
+				case "low":
+					listPost=postRepo.findFilterTypePriceASC(type, minPrice, maxPrice);
+					break;
+				case "high":
+					listPost=postRepo.findFilterTypePriceDESC(type, minPrice, maxPrice);
+					break;
+				}
+			}		
+			model.addAttribute("listPost", listPost);
+			service.checkUser(model, principal);
+		}
+		catch(Exception e){
+			return "allPost";
+		}    
+	    return "allPost";
 	  }
 }

@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -76,11 +77,50 @@ public class SellerController {
 		catch(Exception e){
 			return "login";
 		}
-		User loginedUser = (User) ((Authentication) principal).getPrincipal();
-		String username=loginedUser.getUsername();
-        model.addAttribute("listPost",postRepo.findSellerNewPost(username));
+
         return "profile";
 	  }
+	
+	@RequestMapping("/updateProfile")
+	  public String updateProfile(Model model, Principal principal,@RequestParam("fullName") String fullName, 
+			 					@RequestParam("address") String address, @RequestParam("phone") String phone) {
+		try {
+			service.checkUser(model, principal);
+		}
+		catch(Exception e){
+			return "login";
+		}
+		User loginedUser = (User) ((Authentication) principal).getPrincipal();
+		String username=loginedUser.getUsername();
+		if(username.contains("@")) {
+			SocialAccount socialAcc=socialAccRepo.findByEmail(username);
+			socialAcc.setFull_name(fullName);
+			socialAcc.setAddress(address);
+			socialAcc.setPhone(phone);
+			socialAccRepo.save(socialAcc);
+		}
+		else {
+			Account acc=accRepo.findByUsername(username);
+			acc.setFull_name(fullName);
+			acc.setAddress(address);
+			acc.setPhone(phone);
+			accRepo.save(acc);
+		}
+      return "profile";
+	  }
+	
+	@RequestMapping("/changePassword")
+	  public String changePass(Model model, Principal principal) {
+		try {
+			service.checkUser(model, principal);
+		}
+		catch(Exception e){
+			return "login";
+		}
+    
+    return "changePassword";
+	  }
+	
 	@RequestMapping("/accountwallet")
 	  public String accwallet(Model model, Principal principal) {
 		try {
@@ -92,6 +132,32 @@ public class SellerController {
       
       return "accountWallet";
 	  }
+	
+	@RequestMapping("/doChangePassword")
+	  public String doChangePass(Model model, Principal principal, @RequestParam("currentPass") String currentPass, 
+			  						@RequestParam("password") String password, RedirectAttributes redirectAttributes) {
+		try {
+			service.checkUser(model, principal);
+		}
+		catch(Exception e){
+			return "login";
+		}
+		User loginedUser = (User) ((Authentication) principal).getPrincipal();
+		  String username=loginedUser.getUsername();
+		  Account acc=accRepo.findByUsername(username);
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		if(encoder.matches(currentPass, acc.getPassword())){
+			acc.setPassword(encoder.encode(password));
+			accRepo.save(acc);
+			redirectAttributes.addFlashAttribute("message", "Change Password Successfully!");
+			return "redirect:/changePassword";
+		}
+		else {
+			redirectAttributes.addFlashAttribute("message1", "The current password entered is incorrect!");
+			return "redirect:/changePassword";
+		}
+	  }
+	
 	@RequestMapping("/postNew")
 	  public String postNew(Model model, Principal principal, RedirectAttributes redirectAttributes) {
 		try {
@@ -283,5 +349,47 @@ public class SellerController {
 		 postRepo.deleteById(id);
 		 redirectAttributes.addFlashAttribute("message", "Delete Post Successfully!!");
 	    return "redirect:/allSellerPost";
+	  }
+	
+	/////////////////////UPGRADE/////////////////////////////////////
+	@RequestMapping("/upgrade")
+	  public String upgrade(Model model, Principal principal) {
+		try {
+			service.checkUser(model, principal);
+		}
+		catch(Exception e){
+			return "login";
+		}
+	    return "upgrade";
+	  }
+	@RequestMapping("/upgradeSilver")
+	  public String upgradeSilver(Model model, Principal principal) {
+		try {
+			service.checkUser(model, principal);
+		}
+		catch(Exception e){
+			return "login";
+		}
+	    return "upgradeSilver";
+	  }
+	@RequestMapping("/upgradeGold")
+	  public String upgradeGold(Model model, Principal principal) {
+		try {
+			service.checkUser(model, principal);
+		}
+		catch(Exception e){
+			return "login";
+		}
+	    return "upgradeGold";
+	  }
+	@RequestMapping("/upgradePlatinum")
+	  public String upgradePlatinum(Model model, Principal principal) {
+		try {
+			service.checkUser(model, principal);
+		}
+		catch(Exception e){
+			return "login";
+		}
+	    return "upgradePlatinum";
 	  }
 }

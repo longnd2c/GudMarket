@@ -314,6 +314,10 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="/webapp/vendor/bootstrap/js/bootstrap.min.js"></script>
 <!--===============================================================================================-->
 	<script src="/webapp/vendor/select2/select2.min.js"></script>
+	
+	 <!--Plugin JavaScript file-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
+    
 	<script>
 		$(".js-select2").each(function(){
 			$(this).select2({
@@ -404,8 +408,23 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 			})
 		});
 	</script>
+	
+	<script>
+	$(".js-range-slider").ionRangeSlider({
+        type: "double",
+        min: 0,
+        max: 1000,
+        from: 0,
+        to: 1000,
+        prefix: "$",
+        max_postfix: "+",
+        grid: true
+        
+    });
+	</script>
 <!--===============================================================================================-->
 	<script src="/webapp/js/main.js"></script>
+	
 	
 
 </body>

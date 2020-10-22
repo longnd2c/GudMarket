@@ -2,7 +2,10 @@ package com.gudmarket.web.controller;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.gudmarket.web.entity.Account;
+import com.gudmarket.web.entity.Post;
 import com.gudmarket.web.entity.SocialAccount;
 import com.gudmarket.web.google.GooglePojo;
 import com.gudmarket.web.google.GoogleUtils;
@@ -50,6 +54,28 @@ public class MainController {
 	@RequestMapping(value = {"/" ,"/index" }, method = RequestMethod.GET)
     public String homePage(Model model, Principal principal, Authentication authentication) {
 		try {
+			List<Post> listPriority=postRepo.findPriority();
+			Date now = new Date();
+			Date priority=null;
+			for(Post p : listPriority) {
+				priority=p.getPriority();
+				if(priority!=null && priority.before(now)) {
+					p.setPriority(null);
+					postRepo.save(p);
+				}
+			}
+			List<Post> list=postRepo.findAll();
+			Calendar c = Calendar.getInstance(); 
+			c.setTime(now); 
+			c.add(Calendar.DATE, -30);
+			now = c.getTime();
+			Date date=null;
+			for(Post p : list) {
+				date=p.getDate();
+				if(priority!=null && date.before(now)) {
+					postRepo.delete(p);
+				}
+			}
 			service.checkUser(model, principal);
 		}
 		catch(Exception e){
