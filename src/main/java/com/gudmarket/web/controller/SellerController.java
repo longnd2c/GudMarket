@@ -372,6 +372,46 @@ public class SellerController {
 		}
 	    return "upgradeSilver";
 	  }
+	
+	@RequestMapping("/doUpgradeSilver")
+	  public String doUpgradeSilver(Model model, Principal principal, @RequestParam("buy_money") String money, @RequestParam("num_time") String num_time, RedirectAttributes redirectAttributes ) {
+		Double m= Double.parseDouble(money);
+		int num=Integer.parseInt(num_time);
+		Date dt = new Date();
+		Calendar c = Calendar.getInstance(); 
+		c.setTime(dt); 
+		c.add(Calendar.MONTH, num);
+		dt = c.getTime();
+		User loginedUser = (User) ((Authentication) principal).getPrincipal();
+		String username=loginedUser.getUsername();
+		if(username.contains("@")) {
+			SocialAccount socialAcc=socialAccRepo.findByEmail(username);
+			if(socialAcc.getMoney()<m) {
+				redirectAttributes.addFlashAttribute("message", "You don't have enough money in your account!");
+				return "redirect:/upgradeSilver";
+			}
+			socialAcc.setMoney(socialAcc.getMoney()-m);
+			socialAcc.setId_level("L02");
+			socialAcc.setPost_remain(socialAcc.getPost_remain()+30);
+			socialAcc.setLevel_to(dt);
+			socialAccRepo.save(socialAcc);
+		}
+		else {
+			Account acc=accRepo.findByUsername(username);
+			if(acc.getMoney()<m) {
+				redirectAttributes.addFlashAttribute("message", "You don't have enough money in your account!");
+				return "redirect:/upgradeSilver";
+			}
+			acc.setMoney(acc.getMoney()-m);
+			acc.setId_level("L02");
+			acc.setPost_remain(acc.getPost_remain()+30);
+			acc.setLevel_to(dt);
+			accRepo.save(acc);
+		}
+		redirectAttributes.addFlashAttribute("message", "Upgrade account to SILVER level successfully!!");
+	    return "redirect:/upgradeSilver";
+	  }
+	
 	@RequestMapping("/upgradeGold")
 	  public String upgradeGold(Model model, Principal principal) {
 		try {

@@ -50,5 +50,27 @@ public interface PostRepository extends JpaRepository<Post, String> {
 	
 	@Query(value ="SELECT * FROM post p LEFT JOIN type t ON p.id_type=t.id_type WHERE status=true AND t.id_cate=?1 AND p.price BETWEEN ?2 and ?3 ORDER BY priority desc, price asc", nativeQuery = true)
 	List<Post> findFilterTypePriceASC(String type, String minPrice, String maxPrice );
+	
+	@Query(value ="select * from post p LEFT JOIN type t ON p.id_type=t.id_type WHERE t.id_cate=?1 AND status=true ORDER BY priority desc, date desc", nativeQuery = true)
+	List<Post> findByCateId(String id);
+	
+	/////////////////TYPE///////////////////////////////
+	@Query(value ="SELECT * FROM post p LEFT JOIN type t ON p.id_type=t.id_type WHERE t.id_cate=?1 AND status=true AND p.price BETWEEN ?2 and ?3 ORDER BY priority desc, date desc", nativeQuery = true)
+	List<Post> findFilterST(String type, String minPrice, String maxPrice );
+	
+	@Query(value ="SELECT * FROM post p LEFT JOIN type t ON p.id_type=t.id_type WHERE t.id_cate=?1 AND status=true AND p.price BETWEEN ?2 and ?3 ORDER BY priority desc, price desc", nativeQuery = true)
+	List<Post> findFilterSTPriceDESC(String type, String minPrice, String maxPrice );
+	
+	@Query(value ="SELECT * FROM post p LEFT JOIN type t ON p.id_type=t.id_type WHERE t.id_cate=?1 AND status=true AND p.price BETWEEN ?2 and ?3 ORDER BY priority desc, price asc", nativeQuery = true)
+	List<Post> findFilterSTPriceASC(String type, String minPrice, String maxPrice );
+	
+	@Query(value ="SELECT * FROM post p WHERE p.id_type=?1 AND p.price BETWEEN ?2 and ?3 ORDER BY priority desc, date desc", nativeQuery = true)
+	List<Post> findFilterSubType(String type, String minPrice, String maxPrice );
+	
+	@Query(value ="SELECT * FROM post p WHERE p.id_type=?1 AND t.id_cate=?1 AND p.price BETWEEN ?2 and ?3 ORDER BY priority desc, price desc", nativeQuery = true)
+	List<Post> findFilterSubTypePriceDESC(String type, String minPrice, String maxPrice );
+	
+	@Query(value ="SELECT * FROM post p WHERE p.id_type=?1 AND t.id_cate=?1 AND p.price BETWEEN ?2 and ?3 ORDER BY priority desc, price asc", nativeQuery = true)
+	List<Post> findFilterSubTypePriceASC(String type, String minPrice, String maxPrice );
 
 }

@@ -54,6 +54,7 @@ public class MainController {
 	@RequestMapping(value = {"/" ,"/index" }, method = RequestMethod.GET)
     public String homePage(Model model, Principal principal, Authentication authentication) {
 		try {
+			///////////////REMOVE PRIORITY////////////////
 			List<Post> listPriority=postRepo.findPriority();
 			Date now = new Date();
 			Date priority=null;
@@ -64,6 +65,7 @@ public class MainController {
 					postRepo.save(p);
 				}
 			}
+			/////////////DELETE 30 DAY POST///////////////
 			List<Post> list=postRepo.findAll();
 			Calendar c = Calendar.getInstance(); 
 			c.setTime(now); 
@@ -77,6 +79,63 @@ public class MainController {
 				}
 			}
 			service.checkUser(model, principal);
+			
+			//////////////DO ADD POST TO ACCOUNT WITH LEVEL/////////////////////
+			 User loginedUser = (User) ((Authentication) principal).getPrincipal();
+			  String username=loginedUser.getUsername();
+			  Date time_now = new Date();
+			  if(username.contains("@")) {
+					SocialAccount socialAcc=socialAccRepo.findByEmail(username);
+					Date level_to = socialAcc.getLevel_to();
+					if(level_to!=null) {
+						if(level_to.before(time_now)) {
+							socialAcc.setLevel_to(null);
+						}
+						else {
+							if(time_now.getDate()==level_to.getDate()) {
+								switch(socialAcc.getId_level()) {
+								case "L01":
+									socialAcc.setPost_remain(socialAcc.getPost_remain()+30);
+									break;
+								case "L02":
+									socialAcc.setPost_remain(socialAcc.getPost_remain()+60);
+									break;
+								case "L03":
+									socialAcc.setPost_remain(socialAcc.getPost_remain()+120);
+									break;
+								}
+							}
+						}
+						
+					}
+					socialAccRepo.save(socialAcc);
+				}
+				else {
+					Account acc=accRepo.findByUsername(username);
+					Date level_to=acc.getLevel_to();
+					if(acc.getLevel_to()!=null) {
+						if(acc.getLevel_to().before(time_now)) {
+							acc.setLevel_to(null);
+							
+						}
+						else {
+							if(time_now.getDate()==level_to.getDate()) {
+								switch(acc.getId_level()) {
+								case "L01":
+									acc.setPost_remain(acc.getPost_remain()+30);
+									break;
+								case "L02":
+									acc.setPost_remain(acc.getPost_remain()+60);
+									break;
+								case "L03":
+									acc.setPost_remain(acc.getPost_remain()+120);
+									break;
+								}
+							}
+						}
+					}
+					accRepo.save(acc);
+				}
 		}
 		catch(Exception e){
 			return "index";

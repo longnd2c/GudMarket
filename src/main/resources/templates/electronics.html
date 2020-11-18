@@ -2,7 +2,7 @@
 <th:block th:include="/common/webapp/navbar"></th:block>
 
 <script>
-		document.title='GudMarket - All Post';
+		document.title='GudMarket - Electronics';
 </script>
 
 <!-- Product -->
@@ -11,36 +11,25 @@
 			<div class="flex-w flex-sb-m p-b-52">
 				<div class="flex-w flex-l-m filter-tope-group m-tb-10">
 					<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1" data-filter="*">
-						All Posts
-					</button>
-
-					<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".fashion">
-						Fashion
-					</button>
-
-					<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".electronic">
 						Electronics
 					</button>
 
-					<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".pet">
-						Pet
+					<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".smartphone">
+						Smartphone
 					</button>
 
-					<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".home">
-						Home & Kitchen
+					<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".laptop">
+						Laptop
 					</button>
 
-					<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".entertainment">
-						Entertainment
+					<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".camrera">
+						Camera
 					</button>
-					
-					<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".food">
-						Food
+
+					<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".others">
+						Others
 					</button>
-					
-					<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".homeelectroic">
-						Home Electronics
-					</button>
+
 				</div>
 
 				<div class="flex-w flex-c-m m-tb-10">
@@ -59,7 +48,7 @@
 				
 				<!-- Search product -->
 				<div class="dis-none panel-search w-full p-t-10 p-b-15">
-					<form th:action="@{/searchAllPost}">
+					<form th:action="@{/searchElectronics}">
 						<div class="bor8 dis-flex p-l-15">
 							<button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
 								<i class="zmdi zmdi-search"></i>
@@ -72,7 +61,7 @@
 
 				<!-- Filter -->
 				<div class="dis-none panel-filter w-full p-t-10">
-				<form th:action="@{/filterAllPost}" onsubmit="return validateForm()">
+				<form th:action="@{/filterElectronics}" onsubmit="return validateForm()">
 					<div class="wrap-filter flex-w bg6 w-full p-lr-40 p-t-27 p-lr-15-sm">
 					
 						<div class="filter-col3 p-r-15 p-b-27">
@@ -85,63 +74,40 @@
 									<input id="option0" name="type" value="all" type="radio" checked>
 									<label for="option0" class="stext-106 trans-04"> 
 										<span></span> 
-										All
+										All 
 									</label>
 								</li>
 								<li class="p-b-6">
-									<input id="option1" name="type" value="C01" type="radio">
+									<input id="option1" name="type" value="T21" type="radio">
 									<label for="option1" class="stext-106 trans-04"> 
 										<span></span> 
-										Fashion
+										Smartphone
 									</label>
 								</li>
 
 								<li class="p-b-6">
-									<input id="option2" name="type" value="C02" type="radio">
+									<input id="option2" name="type" value="T22" type="radio">
 									<label for="option2" class="stext-106 trans-04"> 
 										<span></span> 
-										Electronics
+										Laptop
 									</label>
 								</li>
-
 								<li class="p-b-6">
-									<input id="option3" name="type" value="C03" type="radio">
+									<input id="option3" name="type" value="T23" type="radio">
 									<label for="option3" class="stext-106 trans-04"> 
 										<span></span> 
-										Pet
+										Camera
 									</label>
 								</li>
 
 								<li class="p-b-6">
-									<input id="option4" name="type" value="C04" type="radio">
+									<input id="option4" name="type" value="T24" type="radio">
 									<label for="option4" class="stext-106 trans-04"> 
 										<span></span> 
-										Home & Kitchen 
+										Others
 									</label>
 								</li>
-
-								<li class="p-b-6">
-									<input id="option5" name="type" value="C05" type="radio">
-									<label for="option5" class="stext-106 trans-04"> 
-										<span></span> 
-										Entertainment
-									</label>
-								</li>
-
-								<li class="p-b-6">
-									<input id="option6" name="type" value="C06" type="radio">
-									<label for="option6" class="stext-106 trans-04"> 
-										<span></span> 
-										Food
-									</label>
-								</li>
-								<li class="p-b-7">
-									<input id="option7" name="type" value="C07" type="radio">
-									<label for="option7" class="stext-106 trans-04"> 
-										<span></span> 
-										Home Electronics
-									</label>
-								</li>
+								
 							</ul>
 						</div>
 						<div class="filter-col1 p-r-15 p-b-27">
@@ -207,33 +173,25 @@
 					</form>
 				</div>
 			</div>
-
 			<div class="row isotope-grid">
-				<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item" th:classappend="${(p.type.cate.id_cate=='C01' ? 'fashion' : '')+
-				(p.type.cate.id_cate=='C02' ? 'electronic' : '')+
-				(p.type.cate.id_cate=='C03' ? 'pet' : '')+
-				(p.type.cate.id_cate=='C04' ? 'home' : '')+
-				(p.type.cate.id_cate=='C05' ? 'entertainment' : '')+
-				(p.type.cate.id_cate=='C06' ? 'food' : '')+
-				(p.type.cate.id_cate=='C07' ? 'homeelectronic' : '')}" th:each="p : ${listPost}">
+				<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item" th:classappend="${(p.type.id_type=='T21' ? 'smartphone' : '')+
+				(p.type.id_type=='T22' ? 'laptop' : '')+
+				(p.type.id_type=='T23' ? 'camera' : '')+
+				(p.type.id_type=='T24' ? 'others' : '')}" th:each="p : ${listPost}">
 					<!-- Block2 -->
 					<div class="block2">
 						<div class="block2-pic hov-img0" th:if="${p.img}!=null" th:style="${p.priority!=null ? 'border: 2px groove #6c7ae0' : ''}" >
-						<a th:attr="onclick=|send_form('${p.id_post}')|" style="cursor:pointer;">
 							<img th:src="@{${p.img.split('@')[0]}}" alt="IMG-PRODUCT">
-						</a>	
 						</div>
 						<div class="block2-pic hov-img0" th:if="${p.img}==null" th:style="${p.priority!=null ? 'border: 2px groove #6c7ae0' : ''}" >
-							<a th:attr="onclick=|send_form('${p.id_post}')|" style="cursor:pointer;">
-								<img src="/webapp/images/default-img.png" alt="IMG-PRODUCT">
-							</a>
+							<img src="/webapp/images/default-img.png" alt="IMG-PRODUCT">
 						</div>
 
 						<div class="block2-txt flex-w flex-t p-t-14">
 							<div class="block2-txt-child1 flex-col-l ">
 							
 								<form th:action="@{/postdetail}" th:id="'post_form' + ${p.id_post}">
-							      <a th:text="${p.title}" th:id="'a_link' + ${p.id_post}" th:attr="onclick=|send_form('${p.id_post}')|" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6" style="cursor:pointer;">
+							      <a th:text="${p.title}" href="#" th:id="'a_link' + ${p.id_post}" th:attr="onclick=|send_form('${p.id_post}')|" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
 							      </a>
 							      <input type="hidden" name ="id_post" th:value="${p.id_post}"/>
 							    </form>						
@@ -259,24 +217,19 @@
 				</div>
 			</div>
 
-			<!-- Pagination -->
-			<div class="flex-c-m flex-w w-full p-t-38">
-				<a href="#" class="flex-c-m how-pagination1 trans-04 m-all-7 active-pagination1">
-					1
+			<!-- Load more -->
+			<div class="flex-c-m flex-w w-full p-t-45">
+				<a href="#" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04">
+					Load More
 				</a>
-
 			</div>
 		</div>
-	
+	</div>
 	
 <script>
 function send_form(id_post) {
     document.getElementById("post_form"+id_post).submit();
 }
-function validateForm(){
-
-}
-	
 </script>
 
-<th:block th:include="/common/webapp/footer"></th:block>  
+<th:block th:include="/common/webapp/footer"></th:block>

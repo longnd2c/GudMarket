@@ -50,6 +50,8 @@ public class SocialAccount {
 	  @Column(name = "block_to")
 	  private Date block_to;
 	  
+	  @Column(name = "level_to")
+	  private Date level_to;
 	  
 
 	public SocialAccount() {
@@ -145,6 +147,14 @@ public class SocialAccount {
 
 	public void setBlock_to(Date block_to) {
 		this.block_to = block_to;
+	}
+
+	public Date getLevel_to() {
+		return level_to;
+	}
+
+	public void setLevel_to(Date level_to) {
+		this.level_to = level_to;
 	}
 
 	public String toString()

@@ -55,14 +55,14 @@
                             <th>ID Post</th>
                             <th>Title</th>
                             <th>Username/Email</th>
-                            <th>ID Type</th>
+                            <th>Type</th>
                             <th>Date</th>
                             <th>Status</th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="p : ${listPost}">
+                        <tr th:each="p : ${listPost}" th:style="${p.status==false ? 'background:#e0f3ff' : ''}" >
                             <td th:text="${p.id_post}"></td>
                             <td th:text="${p.title}"></td>
                             <td th:text="${p.username}"></td>
@@ -71,11 +71,17 @@
                             <td th:text="${p.status}"></td>
                             <td>
                             
-                            <!-- SHOW button -->
+                            <!-- SHOW button 
                             	<button type ="button" class="btn btn-sm btn-info delete-product" style="color:#fff;" data-toggle="modal"
                     				th:attr="data-target='#showModal'+ ${p.id_post}"><i class="fas fa-eye"></i>
                     				DETAIL
                             	</button>
+                            	-->
+                            	<button type ="button" class="btn btn-sm btn-info delete-product" style="color:#fff;"
+                    				th:attr="onclick=|show('${p.id_post}')|"><i class="fas fa-eye"></i>
+                    				DETAIL
+                            	</button>
+                            	
                             	<!-- Update button -->
                             	<a th:if="${p.status==false}" th:href="@{/post-update/} + ${p.id_post}" class="btn btn-sm btn-success edit-product" style="color:#fff;">
 	                            	<span style="display:none;"></span>
@@ -112,63 +118,108 @@
 				                    </div>
 				                </div>
 				                
-				                <!-- Show info -->
-                            	<div class="modal fade" th:id="'showModal' + ${p.id_post}">
-					                    <div class="modal-dialog">
-					                        <div class="modal-content">
+				                
+				                <!-- Modal1 -->
+	<div class="modal1 p-t-100 p-b-20" th:id="'showModal' + ${p.id_post}">
+		<div class="overlay-modal1 js-hide-modal1" th:attr="onclick=|hide('${p.id_post}')|"></div>
+		<div class="container">
+			<div class="bg0 p-t-60 p-b-30 p-lr-15-lg how-pos3-parent">
+				<button class="how-pos3 hov3 trans-04 close" th:attr="onclick=|hide('${p.id_post}')|">
+					<img src="/webapp/images/icons/icon-close.png">
+				</button>
+
+				<div class="row">
+				<div class="col-md-6 col-lg-7 p-b-30">
+					<div class="p-l-25 p-r-30 p-lr-0-lg">
+						<div class="wrap-slick3 flex-sb flex-w">
+							<div class="wrap-slick3-dots"></div>
+							<div class="wrap-slick3-arrows flex-sb-m flex-w"></div>
+
+							<div class="slick3 gallery-lb" th:if="${p.img!=null}">
+								<div class="item-slick3" th:each="img : ${p.img.split('@')}" th:attr="data-thumb=|${img}|" >
+									<div class="wrap-pic-w pos-relative">
+										<img th:src="@{${img}}" alt="IMG-PRODUCT">
+
+										<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" th:href="@{${img}}">
+											<i class="fa fa-expand"></i>
+										</a>
+									</div>
+								</div>
+
+							</div>
+							<div class="slick3 gallery-lb" th:if="${p.img==null}">
+								<div class="item-slick3" data-thumb="/webapp/images/default-img.png" style="width:100%;">
+									<div class="wrap-pic-w pos-relative" >
+										<img src="/webapp/images/default-img.png" alt="IMG-PRODUCT">
+
+										<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="/webapp/images/default-img.png">
+											<i class="fa fa-expand"></i>
+										</a>
+									</div>
+								</div>
+
+							</div>
+							
+							
+						</div>
+					</div>
+				</div>
 					
-					                            <!-- Modal Header -->
-					                            <div class="modal-header">
-					                                <h4 class="modal-title">Post Information</h4>
-					                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-					                            </div>
-					                            <div class="modal-body">
-						                            <div class="position-relative form-group"><label>Post ID</label>
-	                                                    	<input th:value="${p.id_post}" type="text" class="form-control" readonly>
-	                                                 </div>
-	                                                 <div class="position-relative form-group"><label>Title</label>
-	                                                    	<input th:value="${p.title}" type="text" class="form-control" readonly>
-	                                                 </div>
-	                                                 <div class="position-relative form-group"><label>Username/Email</label>
-	                                                    	<input th:value="${p.username}" type="text" class="form-control" readonly>
-	                                                 </div>
-	                                                 <div class="position-relative form-group"><label>Type</label>
-	                                                    	<input th:value="${p.type.type_name}" type="text" class="form-control" readonly>
-	                                                 </div>
-	                                                 <div class="position-relative form-group"><label>Description</label>
-	                                                    	<textarea th:text="${p.description}" class="form-control" readonly></textarea>
-	                                                 </div>
-	                                                 <div class="position-relative form-group"><label>Price</label>
-	                                                    	<input th:value="${p.price}" type="text" class="form-control" readonly>
-	                                                 </div>
-	                                                 <div class="position-relative form-group"><label>Contact</label>
-	                                                    	<input th:value="${p.contact}" type="text" class="form-control" readonly>
-	                                                 </div>
-	                                                 <div class="position-relative form-group"><label>Image</label>
-	                                                 	<div th:if="${p.img!=null}">
-	                                                    	<img th:each="img : ${p.img.split('@')}" th:src="@{${img}}" alt="" style="width:200px; height:200px; margin:10px;"/>
-	                                                    </div>
-	                                                    <input th:if="${p.img==null}" value="No Image" type="text" class="form-control" readonly>
-	                                                 </div>
-	                                                 <div class="position-relative form-group"><label>Date</label>
-	                                                    	<input th:value="${#dates.format(p.date, 'dd-MM-yyyy')}" type="text" class="form-control" readonly>
-	                                                 </div>
-	                                                 <div class="position-relative form-group"><label>Priority</label>
-	                                                    	<input th:value="${#dates.format(p.priority, 'dd-MM-yyyy')}" type="text" class="form-control" readonly>
-	                                                 </div>
-	                                                 <div class="position-relative form-group"><label>Status</label>
-	                                                    	<input th:value="${p.status}" type="text" class="form-control" readonly>
-	                                                 </div>
-					                            	
-					                            </div>
-					                            <!-- Modal footer -->
-					                            <div class="modal-footer">
-					                                <button type="button" class="btn btn-danger"
-					                                    data-dismiss="modal">Close</button>
-					                            </div>
-					                        </div>
-					                    </div>
-				                </div>
+				<div class="col-md-6 col-lg-5 p-b-30">
+					<div class="p-r-50 p-t-5 p-lr-0-lg">
+						<h4 th:text="${p.title}" class="mtext-105 cl2 js-name-detail p-b-14">
+						</h4>
+
+						<span th:text="'$'+${p.price}" class="mtext-106 cl2">
+						</span>
+
+						<pre th:text="${p.description}" class="stext-102 cl3 p-t-23">
+							
+						</pre>
+						
+						<!--  -->
+						<div class="p-t-33">
+							<div class="flex-w flex-r-m p-b-10">
+								<div class="size-203 flex-c-m respon6">
+									Contact
+								</div>
+
+								<div class="size-204 respon6-next">
+									<div class="rs1-select2 bor8 bg0">
+										<input class="stext-111 plh3 size-111 p-lr-15" style="font-size:20px; font-weight:bold; text-align:center; color:#6c7ae0; cursor:pointer;" type="text" name="contact" id="contact" th:value="${p.contact}" readonly>
+									</div>
+								</div>
+							</div>
+							<div class="flex-w flex-r-m p-b-10">
+								<i th:text="'Post Date: '+${#dates.format(p.date, 'dd-MM-yyyy')}" class="stext-107 cl6 p-lr-25">
+									
+								</i>
+							</div>
+
+
+						</div>
+
+						<!--  -->
+						<div class="flex-w flex-m p-l-100 p-t-40 respon7">
+							<!-- Update button -->
+                            	<a th:if="${p.status==false}" th:href="@{/post-update/} + ${p.id_post}" class="btn btn-sm btn-success edit-product" style="color:#fff; width:100%; padding:10px; margin-bottom:10px;">
+	                            	<span style="display:none;"></span>
+	                            	<i class="fas fa-check"></i>
+	                            	APPROVAL
+                            	</a>
+                            	<!-- Delete button -->
+                            	<button type ="button" class="btn btn-sm btn-danger delete-product" style="color:#fff; width:100%; padding:10px;" data-toggle="modal"
+                    				th:attr="data-target='#delModal'+ ${p.id_post}"><i class="fas fa-trash-alt"></i>
+                    				DELETE
+                            	</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			</div>
+		</div>
+	</div>
+	
 				                
                             </td>
                         </tr>
@@ -181,5 +232,18 @@
 </div>
 </div>
 
-
+<script>
+	function show(id){
+		document.getElementById("showModal"+id).style.visibility="visible";
+		document.getElementById("showModal"+id).style.opacity=1;
+		document.getElementById("navbar").style.zIndex="0";
+		document.getElementById("sidebar").style.zIndex="1";
+	}
+	function hide(id){
+		document.getElementById("showModal"+id).style.visibility="hidden";
+		document.getElementById("showModal"+id).style.opacity=0;
+		document.getElementById("navbar").style.zIndex="10";
+		document.getElementById("sidebar").style.zIndex="11";
+	}
+</script>
   <th:block th:include="/common/admin/footer"></th:block>  

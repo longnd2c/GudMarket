@@ -19,7 +19,7 @@
 						All Post of&nbsp;
 					</span>
 					
-					<span class="stext-109 cl4" style="color:#6c7ae0; font-family:Poppins-Medium;" th:text="${username}"></span>
+					<span class="stext-109 cl4" style="color:#6c7ae0; font-family:Poppins-Medium;" th:text="${username.split('@')[0]}"></span>
 				</div>
 
 				<div class="flex-w flex-c-m m-tb-10">
@@ -33,13 +33,16 @@
 				
 				<!-- Search product -->
 				<div class="dis-none panel-search w-full p-t-10 p-b-15">
-					<div class="bor8 dis-flex p-l-15">
-						<button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
-							<i class="zmdi zmdi-search"></i>
-						</button>
-
-						<input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="search-product" placeholder="Search">
-					</div>	
+					<form th:action="@{/searchAllSellerPost}">
+						<div class="bor8 dis-flex p-l-15">
+							<button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
+								<i class="zmdi zmdi-search"></i>
+							</button>
+	
+							<input th:value="${searchKey}" class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="searchKey" placeholder="Search">
+							<input type="hidden" name="username" th:value="${username}">
+						</div>	
+					</form>
 				</div>
 			</div>
 			

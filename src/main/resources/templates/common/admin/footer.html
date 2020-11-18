@@ -38,7 +38,27 @@
 	confirm_password.onkeyup = validatePassword;
 
 </script>
-  
-<script type="text/javascript" src="/admin/assets/scripts/main.js"></script>
+  <!--===============================================================================================-->
+	<script src="/webapp/vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
+	<script>
+		$('.gallery-lb').each(function() { // the containers for all your galleries
+			$(this).magnificPopup({
+		        delegate: 'a', // the selector for gallery item
+		        type: 'image',
+		        gallery: {
+		        	enabled:true
+		        },
+		        mainClass: 'mfp-fade'
+		    });
+		});
+	</script>
+
+<!--===============================================================================================-->
+	<script src="/webapp/vendor/slick/slick.min.js"></script>
+	<script src="/webapp/js/slick-custom.js"></script>
+
+<script src="/webapp/js/main.js"></script>
+<script src="/admin/assets/scripts/main.js"></script>
+
  </body>
 </html>

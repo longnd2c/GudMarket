@@ -59,6 +59,9 @@ public class Account {
 	  @Column(name = "block_to")
 	  private Date block_to;
 	  
+	  @Column(name = "level_to")
+	  private Date level_to;
+	  
 	  @Column(name = "enabled")
 	  private boolean enabled;
 	  
@@ -172,7 +175,14 @@ public class Account {
 		this.block_to = block_to;
 	}
 	
-	
+	public Date getLevel_to() {
+		return level_to;
+	}
+
+	public void setLevel_to(Date level_to) {
+		this.level_to = level_to;
+	}
+
 	public boolean isEnabled() {
 		return enabled;
 	}
