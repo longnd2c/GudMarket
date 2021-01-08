@@ -18,8 +18,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class Account {
 	
 	@Id
-	  @Column(name = "username")
-	  private String username;
+	  @Column(name = "id_user")
+	  private String id_user;
 	  
 	  @Column(name = "password")
 	  private String password;
@@ -62,6 +62,9 @@ public class Account {
 	  @Column(name = "level_to")
 	  private Date level_to;
 	  
+	  @Column(name = "last_impact")
+	  private Date last_impact;
+	  
 	  @Column(name = "enabled")
 	  private boolean enabled;
 	  
@@ -70,13 +73,19 @@ public class Account {
 		  this.enabled=false;
 	  }
 
-	public String getUsername() {
-		return username;
+	
+
+	public String getId_user() {
+		return id_user;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+
+
+	public void setId_user(String id_user) {
+		this.id_user = id_user;
 	}
+
+
 
 	public String getPassword() {
 		return password;
@@ -182,6 +191,19 @@ public class Account {
 	public void setLevel_to(Date level_to) {
 		this.level_to = level_to;
 	}
+	
+
+	public Date getLast_impact() {
+		return last_impact;
+	}
+
+
+
+	public void setLast_impact(Date last_impact) {
+		this.last_impact = last_impact;
+	}
+
+
 
 	public boolean isEnabled() {
 		return enabled;
@@ -192,7 +214,7 @@ public class Account {
 	}
 
 	public String toString() {
-		String str=this.username+this.full_name+this.address+this.id_level+this.email+this.phone+this.money+this.num_posted+this.post_remain+this.reg_date+this.block_to;
+		String str=this.id_user+this.full_name+this.address+this.id_level+this.email+this.phone+this.money+this.num_posted+this.post_remain+this.reg_date+this.block_to;
 		return str.toLowerCase();
 	}
 	  

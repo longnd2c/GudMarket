@@ -14,8 +14,8 @@ public class Token {
     
     private String token;
   
-    @OneToOne(targetEntity = Account.class, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "username")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false, name = "id_user")
     private Account user;
     
     private Date expiryDate;

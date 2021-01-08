@@ -24,7 +24,7 @@
 							</div>
 							<div>
 								<div class="flex-w flex-sb-m p-b-17" th:switch="${user.id_level}">
-									<span th:utext="${#request.userPrincipal.name.split('@')[0]}" class="mtext-107 cl2 p-r-20" style="margin-top: 30px; font-size: 20px;">
+									<span th:utext="${user.full_name}" class="mtext-107 cl2 p-r-20" style="margin-top: 30px; font-size: 20px;">
 										
 									</span>
 									<a th:case="'L01'" href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5" style="margin-top: 40px; margin-left: 10px;">
@@ -97,9 +97,16 @@
 										<input th:value="${user.phone}" class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="phone" placeholder="Phone Number">
 									</div>
 									
-									<p th:utext="${user.phone}" class="stext-115 cl1 size-213 p-t-18" id="textPhone">
-										
+									<p class="stext-115 cl1 size-213 p-t-18" id="textPhone">
+										<span th:utext="${user.phone}"></span>
+										<a th:if="${user.phone==null}" th:href="@{/changePhone}" class="stext-101 cl2 hov-cl1 trans-04 m-tb-10" style="margin-left: 20px;">
+											ADD PHONE
+										</a>
+										<a th:if="${user.phone!=null}" th:href="@{/changePhone}" class="stext-101 cl2 hov-cl1 trans-04 m-tb-10" style="margin-left: 20px;">
+											CHANGE
+										</a>
 									</p>
+									
 								</div>
 							</div>
 		
@@ -113,8 +120,14 @@
 										Email
 									</span>
 											
-									<p th:utext="${user.email}" class="stext-115 cl1 size-213 p-t-18">
-										
+									<p class="stext-115 cl1 size-213 p-t-18">
+										<span th:utext="${user.email}"></span>
+										<a th:if="${user.email==null}" th:href="@{/changeEmail}" class="stext-101 cl2 hov-cl1 trans-04 m-tb-10" style="margin-left: 20px;">
+											ADD EMAIL
+										</a>
+										<a th:if="${user.email!=null}" th:href="@{/changeEmail}" class="stext-101 cl2 hov-cl1 trans-04 m-tb-10" style="margin-left: 20px;">
+											CHANGE
+										</a>
 									</p>
 								</div>
 							</div>
@@ -311,8 +324,6 @@ function showEditForm(){
 	document.getElementById("textName").style.display="none";
 	document.getElementById("inputAddress").style.display="block";
 	document.getElementById("textAddress").style.display="none";
-	document.getElementById("inputPhone").style.display="block";
-	document.getElementById("textPhone").style.display="none";
 	document.getElementById("editFormButton").style.display="flex";
 	document.getElementById("editButton").style.display="none";
 }

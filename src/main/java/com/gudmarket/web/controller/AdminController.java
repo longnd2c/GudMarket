@@ -23,11 +23,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gudmarket.web.entity.Account;
 import com.gudmarket.web.entity.Post;
-import com.gudmarket.web.entity.SocialAccount;
 import com.gudmarket.web.entity.Type;
 import com.gudmarket.web.repository.AccountRepository;
 import com.gudmarket.web.repository.PostRepository;
-import com.gudmarket.web.repository.SocialAccountRepository;
 import com.gudmarket.web.repository.TypeRepository;
 import com.gudmarket.web.service.SellerService;
 import com.gudmarket.web.service.TypeService;
@@ -44,9 +42,7 @@ public class AdminController {
 	TypeRepository typeRepo;
 	@Autowired
 	TypeService typeService;
-	@Autowired
-	SocialAccountRepository socialAccRepo;
-	
+		
 	@InitBinder
     public void initBinder(WebDataBinder binder) {
         // Date - dd/MM/yyyy
@@ -73,26 +69,10 @@ public class AdminController {
 	    return "seller-list";
 	  }
 	
-	@RequestMapping("/socialSeller-list")
-	  public String listSocialseller(Model model) {
-		List<SocialAccount> list=socialAccRepo.findAll();
-		Date now = new Date();
-		Date block=null;
-		for(SocialAccount acc : list) {
-			block=acc.getBlock_to();
-			if(block!=null && block.before(now)) {
-				acc.setBlock_to(null);
-				socialAccRepo.save(acc);
-			}
-		}
-		model.addAttribute("num_post", postRepo.findByStatus().size());
-	    model.addAttribute("listSocialSeller", list);
-	    return "socialSeller-list";
-	  }
 	
 	@RequestMapping("/sellerBlock")
-	  public String blockseller(@RequestParam(value = "username") String username,@RequestParam(value = "blockTime") String blockTime ,Model model) {
-		Account acc=accRepo.findByUsername(username);
+	  public String blockseller(@RequestParam(value = "userId") String userId,@RequestParam(value = "blockTime") String blockTime ,Model model) {
+		Account acc=accRepo.findByUserId(userId);
 		int date=Integer.parseInt(blockTime);
 		if(date==0) {
 			model.addAttribute("num_post", postRepo.findByStatus().size());
@@ -111,26 +91,6 @@ public class AdminController {
 	    return "seller-list";
 	  }
 	
-	@RequestMapping("/socialSellerBlock")
-	  public String blockSocial(@RequestParam(value = "email") String email,@RequestParam(value = "blockTime") String blockTime ,Model model) {
-		SocialAccount socialAcc=socialAccRepo.findByEmail(email);
-		int date=Integer.parseInt(blockTime);
-		if(date==0) {
-			model.addAttribute("num_post", postRepo.findByStatus().size());
-			model.addAttribute("listSocialSeller", socialAccRepo.findAll());
-		    return "socialSeller-list";
-		}
-		Date dt = new Date();
-		Calendar c = Calendar.getInstance(); 
-		c.setTime(dt); 
-		c.add(Calendar.DATE, date);
-		dt = c.getTime();
-		socialAcc.setBlock_to(dt);
-		socialAccRepo.save(socialAcc);
-		model.addAttribute("num_post", postRepo.findByStatus().size());
-		model.addAttribute("listSocialSeller", socialAccRepo.findAll());
-	    return "socialSeller-list";
-	  }
 	  
 	  @RequestMapping("/searchSeller")
 	  public String search(@RequestParam(value = "searchKey") String searchKey, Model model) {
@@ -143,18 +103,6 @@ public class AdminController {
 		model.addAttribute("num_post", postRepo.findByStatus().size());
 	    model.addAttribute("listSeller", listSeller);
 	    return "seller-list";
-	  }
-	  @RequestMapping("/searchSocialSeller")
-	  public String searchSocial(@RequestParam(value = "searchKey") String searchKey, Model model) {
-		List<SocialAccount> listSocialSeller = new ArrayList<SocialAccount>();
-		for(SocialAccount seller:socialAccRepo.findAll()) {
-			if(seller.toString().contains(searchKey)) {
-				listSocialSeller.add(seller);
-			}
-		}
-		model.addAttribute("num_post", postRepo.findByStatus().size());
-	    model.addAttribute("listSocialSeller", listSocialSeller);
-	    return "socialSeller-list";
 	  }
 	  ///////////////////////////////////POST///////////////////////////////////////////
 	  @RequestMapping("/post-list")

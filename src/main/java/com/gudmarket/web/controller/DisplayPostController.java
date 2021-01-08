@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gudmarket.web.entity.Post;
+import com.gudmarket.web.repository.AccountRepository;
 import com.gudmarket.web.repository.PostRepository;
 import com.gudmarket.web.service.UserService;
 
@@ -41,6 +42,8 @@ public class DisplayPostController {
 	private PostRepository postRepo;
 	@Autowired
 	private UserService service;
+	@Autowired
+	private AccountRepository accRepo;
 	
 	@RequestMapping("/allPost")
 	  public String allPost(Model model, Principal principal) {
@@ -83,10 +86,21 @@ public class DisplayPostController {
 	  }
 	
 	@RequestMapping("/sellerAllPost")
-	  public String sellerAllPost(Model model, @RequestParam("username") String username) {
-		model.addAttribute("listPost",postRepo.findSellerAllPost(username));
-		model.addAttribute("username", username);
-		return "sellerAllPost";
+	  public String sellerAllPost(Model model, @RequestParam("id_user") String id_user, Principal principal) {
+		try {
+			User loginedUser = (User) ((Authentication) principal).getPrincipal();
+			String userId=loginedUser.getUsername();
+			model.addAttribute("user", accRepo.findByUserId(userId));
+			model.addAttribute("listPost",postRepo.findSellerAllPost(id_user));
+			model.addAttribute("name", accRepo.findByUserId(id_user).getFull_name());
+			return "sellerAllPost";
+		}
+		catch (Exception ex){
+			model.addAttribute("listPost",postRepo.findSellerAllPost(id_user));
+			model.addAttribute("name", accRepo.findByUserId(id_user).getFull_name());
+			return "sellerAllPost";
+		}
+		
 	  }
 	
 	@RequestMapping("/searchAllPost")

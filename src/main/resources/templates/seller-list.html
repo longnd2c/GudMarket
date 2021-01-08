@@ -52,9 +52,10 @@
                     <table class="mb-0 table table-striped">
                         <thead>
                         <tr>
-                            <th>Username</th>
+                            <th>User ID</th>
                             <th>Full Name</th>
                             <th>Email</th>
+                            <th>Phone Number</th>
                             <th>Level</th>
                             <th>Block to</th>
                             <th></th>
@@ -62,26 +63,27 @@
                         </thead>
                         <tbody>
                         <tr th:each="s : ${listSeller}">
-                            <td th:text="${s.username}"></td>
+                            <td th:text="${s.id_user}"></td>
                             <td th:text="${s.full_name}"></td>
                             <td th:text="${s.email}"></td>
+                            <td th:text="${s.phone}"></td>
                             <td th:text="${s.id_level}"></td>
                             <td th:text="${#dates.format(s.block_to, 'dd-MM-yyyy')}"></td>
                             <td>
                             
                             <!-- Show button -->
                             	<button type ="button" class="btn btn-sm btn-info edit-product" style="color:#fff;" data-toggle="modal"
-                    				th:attr="data-target='#showModal'+ ${s.username}"><i class="fas fa-eye" style="margin-right:5px;"></i>
+                    				th:attr="data-target='#showModal'+ ${s.id_user}"><i class="fas fa-eye" style="margin-right:5px;"></i>
                     				DETAIL
                             	</button>
                             	<!-- Block button -->
                             	<button th:if="${s.block_to==null}" type ="button" class="btn btn-sm btn-danger delete-product" style="color:#fff;" data-toggle="modal"
-                    				th:attr="data-target='#delModal'+ ${s.username}"><i class="fas fa-ban" style="margin-right:5px;"></i>
+                    				th:attr="data-target='#delModal'+ ${s.id_user}"><i class="fas fa-ban" style="margin-right:5px;"></i>
                     				BLOCK
                             	</button>
                             	
                             	<!-- Yes/No confirm -->
-                            	<div class="modal fade" th:id="'delModal' + ${s.username}">
+                            	<div class="modal fade" th:id="'delModal' + ${s.id_user}">
                             	<form th:action="@{/sellerBlock}">
 				                    <div class="modal-dialog">
 				                        <div class="modal-content">
@@ -93,7 +95,7 @@
 				                            </div>
 				                            
 				                            <div class="modal-body">
-				                            	<input type="hidden" th:value="${s.username}" name="username">
+				                            	<input type="hidden" th:value="${s.id_user}" name="username">
 				                            	<select class="form-control" name="blockTime">
 													    <option value="0">Select Time</option>
 													    <option value="1">1 day</option>
@@ -116,7 +118,7 @@
 				                </div>
 				                
 				                 <!-- Show info -->
-                            	<div class="modal fade" th:id="'showModal' + ${s.username}">
+                            	<div class="modal fade" th:id="'showModal' + ${s.id_user}">
 					                    <div class="modal-dialog">
 					                        <div class="modal-content">
 					
@@ -126,8 +128,8 @@
 					                                <button type="button" class="close" data-dismiss="modal">&times;</button>
 					                            </div>
 					                            <div class="modal-body">
-						                            <div class="position-relative form-group"><label>Username</label>
-	                                                    	<input th:value="${s.username}" type="text" class="form-control" readonly>
+						                            <div class="position-relative form-group"><label>User ID</label>
+	                                                    	<input th:value="${s.id_user}" type="text" class="form-control" readonly>
 	                                                 </div>
 	                                                 <div class="position-relative form-group"><label>Full Name</label>
 	                                                    	<input th:value="${s.full_name}" type="text" class="form-control" readonly>

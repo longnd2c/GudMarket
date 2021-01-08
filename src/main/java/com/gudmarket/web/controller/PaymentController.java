@@ -18,9 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.gudmarket.web.config.PaypalPaymentIntent;
 import com.gudmarket.web.config.PaypalPaymentMethod;
 import com.gudmarket.web.entity.Account;
-import com.gudmarket.web.entity.SocialAccount;
 import com.gudmarket.web.repository.AccountRepository;
-import com.gudmarket.web.repository.SocialAccountRepository;
 import com.gudmarket.web.service.PaypalService;
 import com.gudmarket.web.utils.WebUtils;
 import com.paypal.api.payments.Links;
@@ -39,8 +37,7 @@ public class PaymentController {
 	private PaypalService paypalService;
 	@Autowired
 	private AccountRepository accRepo;
-	@Autowired
-	private SocialAccountRepository socialAccRepo;
+	
 	
 	
 	@PostMapping("/pay")
@@ -80,17 +77,10 @@ public class PaymentController {
 				List<Transaction> listTrans=payment.getTransactions();
 				for(Transaction t:listTrans) {
 					 User loginedUser = (User) ((Authentication) principal).getPrincipal();
-					String username=loginedUser.getUsername();
-					if(username.contains("@")) {
-						SocialAccount socialAcc=socialAccRepo.findByEmail(username);	
-						socialAcc.setMoney(Double.parseDouble(t.getAmount().getTotal()));
-						socialAccRepo.save(socialAcc);
-					}
-					else {
-						Account user= accRepo.findByUsername(username);
+					String emailOrPhone=loginedUser.getUsername();	
+						Account user= accRepo.findByEmailOrPhone(emailOrPhone);
 						user.setMoney(Double.parseDouble(t.getAmount().getTotal()));
 						accRepo.save(user);
-					}
 					
 				}
 				return "successPayPal";

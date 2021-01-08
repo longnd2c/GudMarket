@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -27,8 +28,9 @@ public class Post {
 	  //@ManyToOne(fetch = FetchType.LAZY)
 	    //@JoinColumn(name = "username", nullable = false)
 	    //private Account acc;
-	  @Column(name = "username")
-	  private String username;
+	  @ManyToOne(fetch = FetchType.LAZY)
+	  @JoinColumn(name = "id_user", nullable = false)
+	  private Account user;
 	  
 	  @ManyToOne(fetch = FetchType.LAZY)
 	  @JoinColumn(name = "id_type", nullable = false)
@@ -73,12 +75,16 @@ public class Post {
 		this.title = title;
 	}
 
-	public String getUsername() {
-		return username;
+	
+
+	
+
+	public Account getUser() {
+		return user;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUser(Account user) {
+		this.user = user;
 	}
 
 	public Type getType() {
@@ -146,7 +152,7 @@ public class Post {
 	}
 
 	public String toString() {
-		String str=this.id_post+this.title+this.contact+this.description+this.getType().toString()+this.img+this.price+this.status+this.username+this.date;
+		String str=this.id_post+this.title+this.contact+this.description+this.getType().toString()+this.img+this.price+this.status+this.user.getId_user()+this.date;
 		return str.toLowerCase();
 		}
 	

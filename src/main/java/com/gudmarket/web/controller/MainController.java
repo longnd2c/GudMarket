@@ -20,17 +20,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gudmarket.web.entity.Account;
 import com.gudmarket.web.entity.Post;
-import com.gudmarket.web.entity.SocialAccount;
 import com.gudmarket.web.google.GooglePojo;
 import com.gudmarket.web.google.GoogleUtils;
 import com.gudmarket.web.repository.AccountRepository;
 import com.gudmarket.web.repository.PostRepository;
-import com.gudmarket.web.repository.SocialAccountRepository;
 import com.gudmarket.web.service.UserService;
 import com.gudmarket.web.utils.WebUtils;
 
@@ -42,8 +42,6 @@ public class MainController {
 	
 	@Autowired
 	  private GoogleUtils googleUtils;
-	@Autowired
-	  private SocialAccountRepository socialAccRepo;
 	@Autowired
 	private AccountRepository accRepo;
 	@Autowired
@@ -78,72 +76,49 @@ public class MainController {
 					postRepo.delete(p);
 				}
 			}
-			service.checkUser(model, principal);
-			
+			 service.checkUser(model, principal);
 			//////////////DO ADD POST TO ACCOUNT WITH LEVEL/////////////////////
 			 User loginedUser = (User) ((Authentication) principal).getPrincipal();
-			  String username=loginedUser.getUsername();
+			  String userId=loginedUser.getUsername();
+			  System.out.print(loginedUser.getUsername());  
 			  Date time_now = new Date();
-			  if(username.contains("@")) {
-					SocialAccount socialAcc=socialAccRepo.findByEmail(username);
-					Date level_to = socialAcc.getLevel_to();
-					if(level_to!=null) {
-						if(level_to.before(time_now)) {
-							socialAcc.setLevel_to(null);
-						}
-						else {
-							if(time_now.getDate()==level_to.getDate()) {
-								switch(socialAcc.getId_level()) {
-								case "L01":
-									socialAcc.setPost_remain(socialAcc.getPost_remain()+30);
-									break;
-								case "L02":
-									socialAcc.setPost_remain(socialAcc.getPost_remain()+60);
-									break;
-								case "L03":
-									socialAcc.setPost_remain(socialAcc.getPost_remain()+120);
-									break;
-								}
-							}
-						}
-						
-					}
-					socialAccRepo.save(socialAcc);
-				}
-				else {
-					Account acc=accRepo.findByUsername(username);
-					Date level_to=acc.getLevel_to();
+					Account acc=accRepo.findByUserId(userId);
+					Date last_impact =acc.getLast_impact();
 					if(acc.getLevel_to()!=null) {
 						if(acc.getLevel_to().before(time_now)) {
 							acc.setLevel_to(null);
 							
 						}
 						else {
-							if(time_now.getDate()==level_to.getDate()) {
+							if(time_now.getDate()==last_impact.getDate() && time_now.getMonth()!=last_impact.getMonth()) {
 								switch(acc.getId_level()) {
-								case "L01":
-									acc.setPost_remain(acc.getPost_remain()+30);
-									break;
 								case "L02":
-									acc.setPost_remain(acc.getPost_remain()+60);
+									acc.setPost_remain(acc.getPost_remain()+30);
+									acc.setLast_impact(time_now);
 									break;
 								case "L03":
+									acc.setPost_remain(acc.getPost_remain()+60);
+									acc.setLast_impact(time_now);
+									break;
+								case "L04":
 									acc.setPost_remain(acc.getPost_remain()+120);
+									acc.setLast_impact(time_now);
 									break;
 								}
 							}
 						}
 					}
 					accRepo.save(acc);
-				}
+				
 		}
 		catch(Exception e){
 			return "index";
 		}
+		 User loginedUser = (User) ((Authentication) principal).getPrincipal();
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 		for (GrantedAuthority grantedAuthority : authorities) {
 			if (grantedAuthority.getAuthority().equals("ROLE_SELLER")) {
-				service.checkUser(model, principal);
+				model.addAttribute("user", accRepo.findByUserId(loginedUser.getUsername()));
 				return "index";
 			}
 		}
@@ -155,7 +130,7 @@ public class MainController {
 	@RequestMapping(value = "/login" , method = RequestMethod.GET)
     public String loginPage(Model model, Principal principal, Authentication authentication) {
 		try {
-			User loginedUser = (User) ((Authentication) principal).getPrincipal();
+			service.checkUser(model, principal);
 		}
 		catch(Exception e){
 			return "loginPage";
@@ -163,7 +138,6 @@ public class MainController {
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 		for (GrantedAuthority grantedAuthority : authorities) {
 			if (grantedAuthority.getAuthority().equals("ROLE_SELLER")) {
-				service.checkUser(model, principal);
 				return "index";
 			}
 		}
@@ -171,7 +145,7 @@ public class MainController {
     }
 	
 	@RequestMapping("/login-google")
-	  public String loginGoogle(HttpServletRequest request) throws ClientProtocolException, IOException {
+	  public String loginGoogle(HttpServletRequest request, Model model) throws ClientProtocolException, IOException {
 	    String code = request.getParameter("code");
 	    
 	    if (code == null || code.isEmpty()) {
@@ -179,20 +153,37 @@ public class MainController {
 	    }
 	    String accessToken = googleUtils.getToken(code);
 	    GooglePojo googlePojo = googleUtils.getUserInfo(accessToken);
-	    SocialAccount socialAcc=googleUtils.saveSocialAccount(googlePojo);
-	    
-	    UserDetails userDetail = googleUtils.buildUser(socialAcc);
+	    Account acc=googleUtils.findAccount(googlePojo);
+	    if(acc==null) {
+	    	acc=googleUtils.saveAccount(googlePojo);
+	    	model.addAttribute("user", acc);
+	    	return "setPassword";
+	    }    
+	    UserDetails userDetail = googleUtils.buildUser(acc);
 	    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetail, null,
 	        userDetail.getAuthorities());
 	    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 	    SecurityContextHolder.getContext().setAuthentication(authentication);
 	    return "redirect:/index";
 	  }
-
+	
+	@RequestMapping(value = "/doSetPassword")
+    public String setPass(Model model, Principal principal, HttpServletRequest request,
+    						@RequestParam("password" ) String password, @ModelAttribute("user") Account user) {
+		service.saveGoogle(user, password);
+		final Account log_user = accRepo.findByUserId(user.getId_user());
+		UserDetails userDetail = googleUtils.buildUser(log_user);
+	    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetail, null,
+	        userDetail.getAuthorities());
+	    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+	    SecurityContextHolder.getContext().setAuthentication(authentication);
+		return "redirect:/index";
+	}
+		
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
     public String register(Model model, Principal principal, Authentication authentication) {
 		try {
-			User loginedUser = (User) ((Authentication) principal).getPrincipal();
+			service.checkUser(model, principal);
 		}
 		catch(Exception e){
 			model.addAttribute("user", new Account());
@@ -201,7 +192,23 @@ public class MainController {
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 		for (GrantedAuthority grantedAuthority : authorities) {
 			if (grantedAuthority.getAuthority().equals("ROLE_SELLER")) {
-				service.checkUser(model, principal);
+				return "index";
+			}
+		}
+		return "consolePage";
+    }
+	@RequestMapping(value = "/registerPhone", method = RequestMethod.GET)
+    public String registerPhone(Model model, Principal principal, Authentication authentication) {
+		try {
+			service.checkUser(model, principal);
+		}
+		catch(Exception e){
+			model.addAttribute("user", new Account());
+	        return "registerPhone";
+		}
+		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+		for (GrantedAuthority grantedAuthority : authorities) {
+			if (grantedAuthority.getAuthority().equals("ROLE_SELLER")) {
 				return "index";
 			}
 		}
@@ -211,7 +218,7 @@ public class MainController {
 	@RequestMapping(value = "/forgotpassword", method = RequestMethod.GET)
     public String forgotpassword(Model model, Principal principal, Authentication authentication) {
 		try {
-			User loginedUser = (User) ((Authentication) principal).getPrincipal();
+			service.checkUser(model, principal);
 		}
 		catch(Exception e){
 			model.addAttribute("user", new Account());
@@ -220,7 +227,6 @@ public class MainController {
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 		for (GrantedAuthority grantedAuthority : authorities) {
 			if (grantedAuthority.getAuthority().equals("ROLE_SELLER")) {
-				service.checkUser(model, principal);
 				return "index";
 			}
 		}

@@ -24,7 +24,7 @@
 						</div>
 						<div>
 							<div class="flex-w flex-sb-m p-b-17" th:switch="${post_user.id_level}">
-								<span th:utext="${username}" class="mtext-107 cl2 p-r-20" style="margin-top: 30px; font-size: 20px;">
+								<span th:utext="${post_user.full_name}" class="mtext-107 cl2 p-r-20" style="margin-top: 30px; font-size: 20px;">
 									
 								</span>
 								<a th:case="'L01'" href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5" style="margin-top: 40px; margin-left: 10px;">
@@ -182,7 +182,7 @@
 									<button type="submit" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04" style="margin-left:30%" >
 										Show All
 									</button>
-									<input type="hidden" name="username" th:value="${username_origin}">
+									<input type="hidden" name="id_user" th:value="${post_user.id_user}">
 								</form>
 							
 						</div>

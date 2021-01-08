@@ -45,6 +45,13 @@
 		  <artifactId>thymeleaf-extras-springsecurity4</artifactId>
 		</dependency>
 		
+		<!-- Twilio send SMS -->
+		<dependency>
+		  <groupId>com.twilio.sdk</groupId>
+		  <artifactId>twilio</artifactId>
+		  <version>7.47.5</version>
+		</dependency>
+
 		<!-- org.apache.httpcomponents -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>

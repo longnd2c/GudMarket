@@ -16,15 +16,16 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gudmarket.web.entity.SocialAccount;
-import com.gudmarket.web.repository.SocialAccountRepository;
+import com.gudmarket.web.entity.Account;
+import com.gudmarket.web.repository.AccountRepository;
+
 
 @Component
 public class GoogleUtils {
 	 @Autowired
 	  private Environment env;
 	 @Autowired
-	  private SocialAccountRepository socialAccRepo;
+	  private AccountRepository accRepo;
 	 
 	  public String getToken(final String code) throws ClientProtocolException, IOException {
 	    String link = env.getProperty("google.link.get.token");
@@ -47,30 +48,34 @@ public class GoogleUtils {
 	    System.out.println(googlePojo.toString());
 	    return googlePojo;
 	  }
-	  public SocialAccount saveSocialAccount(GooglePojo googlePojo) {
-		  SocialAccount acc= socialAccRepo.findByEmail(googlePojo.getEmail());
-		  if(acc==null) {
-			  SocialAccount socialAcc =new SocialAccount();
-			  socialAcc.setId(googlePojo.getId());
-			  socialAcc.setEmail(googlePojo.getEmail());
-			  socialAcc.setFull_name(googlePojo.getName());
-			  socialAcc.setId_level("L01");
-			  socialAcc.setMoney((double) 0);
-			  socialAcc.setNum_posted(0);
-			  socialAcc.setPost_remain(3);
-			  socialAccRepo.save(socialAcc);
-			  return socialAcc;
+	  public Account findAccount(GooglePojo googlePojo) {
+		  Account accExist= accRepo.findByEmailOrPhone(googlePojo.getEmail());
+		  if(accExist==null) {
+			  return null;
 		  }
-		  return acc;
+		  else{
+			  if(!accExist.isEnabled()) {
+				  accExist.setEnabled(true);
+			  }
+			  return accExist;
+		  }
 	  }
-	  public UserDetails buildUser(SocialAccount socialAcc) {
+	  public Account saveAccount(GooglePojo googlePojo) {
+			  Account acc =new Account();
+			  acc.setId_user(googlePojo.getId());
+			  acc.setEmail(googlePojo.getEmail());
+			  acc.setFull_name(googlePojo.getName());
+			  return acc;
+	  }
+	  
+	  public UserDetails buildUser(Account acc) {
 	    boolean enabled = true;
 	    boolean accountNonExpired = true;
 	    boolean credentialsNonExpired = true;
 	    boolean accountNonLocked = true;
 	    List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 	    authorities.add(new SimpleGrantedAuthority("ROLE_SELLER"));
-	    UserDetails userDetail = new User(socialAcc.getEmail(),
+	    UserDetails userDetail = new User(acc.getId_user(),
 	        "", enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 	    return userDetail;
 	  }

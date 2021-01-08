@@ -9,8 +9,8 @@
                         <p class="message"></p>
                         <div>
                           <div class="txtb">
-                            <input type="text" id="username" name="username" require="required">
-                            <span data-placeholder="Username"></span>
+                            <input type="text" id="emailOrPhone" name="emailOrPhone" require="required">
+                            <span data-placeholder="Email Or Phone Number"></span>
                           </div>
                           <div class="txtb">
                             <input type="password" id="password" name="password" require="required">
@@ -24,7 +24,7 @@
 						        <div th:if="${param.error}" 
 						        	class="alert alert-danger alert-dismissable" style="border-radius:0;">
 						         <p style="position: relative; margin:0;">
-						          <i class="icon fa fa-ban"></i> <span>Invalid Username or Password.</span>
+						          <i class="icon fa fa-ban"></i> <span>Invalid Email/Phone or Password.</span>
 						         </p>
 						        </div>
 						       </div>

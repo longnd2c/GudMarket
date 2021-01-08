@@ -9,8 +9,8 @@ import com.gudmarket.web.entity.Post;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, String> {
-	@Query(value ="select * from post where username=?1", nativeQuery = true)
-	Post findByUsername(String username);
+	@Query(value ="select * from post where id_user=?1", nativeQuery = true)
+	Post findByUserId(String userId);
 	
 	@Query(value ="select * from post where id_post=?1", nativeQuery = true)
 	Post findByPostId(String id);
@@ -24,11 +24,11 @@ public interface PostRepository extends JpaRepository<Post, String> {
 	@Query(value ="select * from post where status=true order by priority desc, date desc", nativeQuery = true)
 	List<Post> findAllByPriorityDate();
 	
-	@Query(value ="select * from post where username=?1 order by date desc limit 3", nativeQuery = true)
-	List<Post> findSellerNewPost(String username);
+	@Query(value ="select * from post where id_user=?1 order by date desc limit 3", nativeQuery = true)
+	List<Post> findSellerNewPost(String userId);
 	
-	@Query(value ="select * from post where username=?1 order by date desc", nativeQuery = true)
-	List<Post> findSellerAllPost(String username);
+	@Query(value ="select * from post where id_user=?1 order by date desc", nativeQuery = true)
+	List<Post> findSellerAllPost(String userId);
 	
 	@Query(value ="select * from post where priority IS NOT NULL", nativeQuery = true)
 	List<Post> findPriority();

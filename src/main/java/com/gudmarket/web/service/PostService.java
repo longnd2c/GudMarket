@@ -16,10 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gudmarket.web.entity.Account;
 import com.gudmarket.web.entity.Post;
-import com.gudmarket.web.entity.SocialAccount;
 import com.gudmarket.web.repository.AccountRepository;
 import com.gudmarket.web.repository.PostRepository;
-import com.gudmarket.web.repository.SocialAccountRepository;
 import com.gudmarket.web.repository.TypeRepository;
 
 @Service
@@ -30,8 +28,6 @@ public class PostService {
 	private UserService service;
 	@Autowired
 	private TypeRepository typeRepo;
-	@Autowired
-	private SocialAccountRepository socialAccRepo;
 	@Autowired
 	private AccountRepository accRepo;
 	
@@ -52,7 +48,7 @@ public class PostService {
 	
 	public void savePost(Post post, Principal principal, MultipartFile[] uploadingFiles, ModelAndView modelAndView) {
 		User loginedUser = (User) ((Authentication) principal).getPrincipal();
-		  String username=loginedUser.getUsername();
+		  String userId=loginedUser.getUsername();
 		  
 		String[] listType= post.getType().getId_type().split(",");
 		  String typeId="";
@@ -91,24 +87,16 @@ public class PostService {
 		    	  post.setImg(imgString);
 			  }
 			  
-			  post.setUsername(username);
+			  post.setUser(accRepo.findByUserId(userId));
 				post.setStatus(false);
 				postRepo.save(post);
 		      
 		      //-1 POST REMAIN AND +1 POSTED///
 		      
-				if(username.contains("@")) {
-					SocialAccount socialAcc=socialAccRepo.findByEmail(username);
-					socialAcc.setNum_posted(socialAcc.getNum_posted()+1);
-					socialAcc.setPost_remain(socialAcc.getPost_remain()-1);
-					socialAccRepo.save(socialAcc);
-				}
-				else {
-					Account acc=accRepo.findByUsername(username);
+					Account acc=accRepo.findByUserId(userId);
 					acc.setNum_posted(acc.getNum_posted()+1);
 					acc.setPost_remain(acc.getPost_remain()-1);
 					accRepo.save(acc);
-				}
 				
 		    } catch (Exception e) {
 		      e.printStackTrace();

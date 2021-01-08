@@ -19,7 +19,7 @@
 						All Post of&nbsp;
 					</span>
 					
-					<span class="stext-109 cl4" style="color:#6c7ae0; font-family:Poppins-Medium;" th:text="${username.split('@')[0]}"></span>
+					<span class="stext-109 cl4" style="color:#6c7ae0; font-family:Poppins-Medium;" th:text="${name}"></span>
 				</div>
 
 				<div class="flex-w flex-c-m m-tb-10">
@@ -40,7 +40,7 @@
 							</button>
 	
 							<input th:value="${searchKey}" class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="searchKey" placeholder="Search">
-							<input type="hidden" name="username" th:value="${username}">
+							<input type="hidden" name="id_user" th:value="${id_user}">
 						</div>	
 					</form>
 				</div>

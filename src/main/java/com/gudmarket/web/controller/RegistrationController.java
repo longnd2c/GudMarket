@@ -9,6 +9,7 @@ import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,11 +27,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import com.gudmarket.web.entity.Account;
+import com.gudmarket.web.phone.SendSMS;
 import com.gudmarket.web.registration.OnRegistrationCompleteEvent;
 import com.gudmarket.web.registration.PasswordResetCompleteEvent;
 import com.gudmarket.web.repository.AccountRepository;
 import com.gudmarket.web.service.UserService;
 import com.gudmarket.web.utils.EncrytedPasswordUtils;
+import com.twilio.Twilio;
 
 @Controller
 public class RegistrationController {
@@ -42,7 +45,15 @@ public class RegistrationController {
 	
 	@Autowired
 	private ApplicationEventPublisher eventPublisher;
+	@Autowired
+	private SendSMS sendSms;
 	
+	@Autowired
+    public void SMSController(
+        @Value("${twilioAccountSid}") String twilioAccountSid,
+        @Value("${twilioAuthToken}") String twilioAuthToken) {
+        Twilio.init(twilioAccountSid, twilioAuthToken);
+    }
 	@InitBinder
     public void initBinder(WebDataBinder binder) {
         // Date - dd/MM/yyyy
@@ -51,15 +62,14 @@ public class RegistrationController {
         binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
     }
 	
-	@RequestMapping("/registration") 
+	@RequestMapping("/registrationEmail") 
 	  public ModelAndView doReg(@ModelAttribute("user") Account user, BindingResult bindingResult, ModelMap model,
-			  			@RequestParam(value = "username") String username, @RequestParam(value ="password") String password, 
+			  			@RequestParam(value ="password") String password, 
 			  			@RequestParam(value ="email") String email, HttpServletRequest request) { 
 		  ModelAndView modelAndView=new ModelAndView();
-		  Account accExists = accRepo.findByUsername(username);
-		  Account accExists2 = accRepo.findByEmail(email);
-	        if (accExists != null || accExists2 !=null) {
-	        	bindingResult.rejectValue("username", "error.username","Username/email already exists.");
+		  Account accExists = accRepo.findByEmailOrPhone(email);
+	        if (accExists != null) {
+	        	bindingResult.rejectValue("email", "error.email","Email already exists.");
 	        }
 	        if (bindingResult.hasErrors()) {
 	            modelAndView.setViewName("register");
@@ -100,7 +110,9 @@ public class RegistrationController {
     	    SecurityContextHolder.getContext().setAuthentication(authentication);
     	    
         	service.deleteToken(token);
-            return new ModelAndView("redirect:/successVerification");
+        	String message="Your Account was create successfully!";
+        	model.addAttribute("message", message);
+            return new ModelAndView("successVerification", model);
         }
 
 //        model.addAttribute("messageKey", "auth.message." + result);
@@ -109,16 +121,66 @@ public class RegistrationController {
         return new ModelAndView("redirect:/404");
     }
 	
-	@GetMapping("/successVerification")
-    public ModelAndView successVer(final HttpServletRequest request) {
-        return new ModelAndView("successVerification");
-    }
 	
+	@RequestMapping("/registrationPhone") 
+	  public ModelAndView doRegPhone(@ModelAttribute("user") Account user, BindingResult bindingResult, ModelMap model,
+			  			@RequestParam(value ="password") String password, 
+			  			@RequestParam(value ="phone") String phone, HttpServletRequest request) { 
+		  ModelAndView modelAndView=new ModelAndView();
+		  Account accExists = accRepo.findByEmailOrPhone(phone);
+		  if(accExists==null) {
+			  service.saveUser(user, password);
+	        	sendSms.sendMessages(phone,user);
+			    model.addAttribute("phone", phone);
+			    model.addAttribute("user", user);
+		        return new ModelAndView("validatePhone", model);
+		  }
+		  if(accExists!=null && accExists.isEnabled()==false) {
+			  sendSms.sendMessages(phone,accRepo.findByEmailOrPhone(phone));
+			    model.addAttribute("phone", phone);
+			    model.addAttribute("user", accRepo.findByEmailOrPhone(phone));
+		        return new ModelAndView("validatePhone", model);
+		  }
+	        if (accExists!=null && accExists.isEnabled()==true) {
+	        	bindingResult.rejectValue("phone", "error.phone","Phone number already exists.");
+	        }
+	        if (bindingResult.hasErrors()) {
+	            modelAndView.setViewName("registerPhone");
+	        }
+	  	return modelAndView; 
+	  }
+	@RequestMapping("/doValidatePhone") 
+	  public ModelAndView doValidatePhone(HttpServletRequest request, @ModelAttribute("user") Account user, BindingResult bindingResult, ModelMap model,
+			  			@RequestParam(value ="code") String code, @RequestParam(value ="phone") String phone) { 
+		  ModelAndView modelAndView=new ModelAndView();
+		  String result=service.validateVerificationToken(code);
+	        if (!result.equals("valid")) {
+	        	bindingResult.rejectValue("email", "error.email","Validate Code is incorrect!");
+	        }
+	        if (bindingResult.hasErrors()) {
+	        	modelAndView.addObject("phone", phone );
+	            modelAndView.setViewName("validatePhone");
+	        }
+	        else {
+	        	final Account _user = service.getUser(code);
+	        	UserDetails userDetail=service.buildUser(_user);
+	    	    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetail, null,
+	    	        userDetail.getAuthorities());
+	    	    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+	    	    SecurityContextHolder.getContext().setAuthentication(authentication);
+	    	    service.deleteCode(_user);
+	    	    String message="Your Phone Number verification was successful!";
+	    	    model.addAttribute("message", message);
+		        return new ModelAndView("successVerification");
+	        }
+	  	
+	  	return modelAndView; 
+	  }
 	//////////////////FORGET PASSWORD////////////////
 	@RequestMapping("/forgotpassaction") 
-	  public ModelAndView forgotpass(@ModelAttribute("user") Account user, BindingResult bindingResult, ModelMap model, @RequestParam(value ="email") String email, HttpServletRequest request) { 
+	  public ModelAndView forgotpass(@ModelAttribute("user") Account user, BindingResult bindingResult, ModelMap model, @RequestParam(value ="emailOrPhone") String emailOrPhone, HttpServletRequest request) { 
 		  ModelAndView modelAndView=new ModelAndView();
-		  Account accExists = accRepo.findByEmail(email);
+		  Account accExists = accRepo.findByEmailOrPhone(emailOrPhone);
 	        if (accExists == null) {
 	        	bindingResult.rejectValue("email", "error.email","Email was not registered.");
 	        }
@@ -128,7 +190,7 @@ public class RegistrationController {
 	        else {
 			    String appUrl = "http://localhost:8080";
 			    eventPublisher.publishEvent(new PasswordResetCompleteEvent(accExists, request.getLocale(), appUrl));
-			    model.addAttribute("email", email);
+			    model.addAttribute("emailOrPhone", emailOrPhone);
 		        return new ModelAndView("redirect:/successForgot", model);
 	        }
 	  	
@@ -136,8 +198,8 @@ public class RegistrationController {
 	  }
 	
 	@GetMapping("/successForgot")
-    public ModelAndView successForgot(final HttpServletRequest request, ModelMap model, @RequestParam("email" ) String email) {
-		model.addAttribute("email", email);
+    public ModelAndView successForgot(final HttpServletRequest request, ModelMap model, @RequestParam("emailOrPhone" ) String emailOrPhone) {
+		model.addAttribute("emailOrPhone", emailOrPhone);
         return new ModelAndView("successForgot", model);
     }
 	

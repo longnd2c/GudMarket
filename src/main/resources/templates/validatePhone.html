@@ -1,0 +1,46 @@
+<th:block th:include="/common/admin/top"></th:block>  
+
+<script>
+	document.title='GudMarket - Validate Phone'
+</script>
+<div class="container">
+    <form name='f' th:action="@{/doValidatePhone}" th:object="${user}" method="post" class="register-form">
+                      
+                        <h2>Validate Phone</h2>
+                        <h4 style="font-size:18px; text-align:center;">A message was sent to your Phone Number: </h4>
+                        <h4 style="font-size:20px; text-align:center; font-weight: bold;" th:text="${phone}"></h4>
+                        <h4 style="font-size:15px; text-align:center;">Please check your message then Enter Validate Code</h4>
+                        <p class="message"></p>
+                        <div>
+                          <div class="txtb">
+                            <input type="text" id="code" name="code" require="required">
+                            <span data-placeholder="Validate Code"></span>
+                          </div>
+
+                          <input type="submit" class="logbtn" id="btnlogin" value="Validate" name="btnlogin">
+                          <input type="hidden" name="admin_login" value="1">
+                          <input th:field="*{email}" type="hidden">
+                          <input type="hidden" id="phone" name="phone" th:value="${phone}">
+                          
+                          <div class="row" style="margin-top:20px;">
+						       <div class="col-md-12">
+						        <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" 
+						        	class="alert alert-danger alert-dismissable" style="border-radius:0;">
+						         <p style="position: relative; margin:0;">
+						          <i class="icon fa fa-ban"></i>
+						         </p>
+						        </div>
+						       </div>
+						  </div>
+        
+                          <div class="bottom-login">
+                            <a th:href="@{/login}">Return Login page</a>
+                          </div>
+                        </div>
+                        
+                        
+                    
+                  </form>
+    </div>
+
+<th:block th:include="/common/admin/footer"></th:block>  

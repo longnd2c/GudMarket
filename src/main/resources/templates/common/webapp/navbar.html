@@ -81,14 +81,17 @@
 						</a>
 
 						<ul sec:authorize="isAuthenticated()" class="main-menu dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11">
-							<li style="margin: 0;">
+							<li style="margin: 0;" th:object="${user}">
 								<a th:href="@{/profile}">
 									<i class="zmdi zmdi-account-circle" style="font-size: 26px; margin-right: 5px;"></i>
-									<span th:utext="${#request.userPrincipal.name.split('@')[0]}" class="" style="position: relative; bottom: 5px; line-height: 0;">
+									<span th:if="${user.full_name==null}" class="" style="position: relative; bottom: 5px; line-height: 0;">
+										[Your Name]
+									</span>
+									<span th:if="${user.full_name!=null}" th:utext="${user.full_name}" class="" style="position: relative; bottom: 5px; line-height: 0;">
 										
 									</span>
 								</a>
-								<div class="sub-menu" th:object="${user}">
+								<div class="sub-menu">
 									<div class="flex-w w-full" style="margin-left: 20px;">
 										<div class="size-212 p-t-2" style="margin-bottom: 10px;">
 											<span class="stext-115 cl1 size-213 p-t-18" style="color: #717fe0;">

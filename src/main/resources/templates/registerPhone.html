@@ -4,14 +4,14 @@
 	document.title='GudMarket - Register'
 </script>
 <div class="container">
-    <form name='f' th:action="@{/registrationEmail}" th:object="${user}" method="post" class="register-form">
+    <form name='f' th:action="@{/registrationPhone}" th:object="${user}" method="post" class="register-form">
                       
                         <h2>Register</h2>
                         <p class="message"></p>
                         <div>
                           <div class="txtb">
-                            <input type="email" name="email" th:field="*{email}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Invalid input value. Example: example@gmail.com" require="required">
-                            <span data-placeholder="Email"></span>
+                            <input type="text" name="phone" th:field="*{phone}" pattern="^\+?(?:[0-9]??).{5,14}[0-9]$" title="Input value not a Phone Number. Example: 0123456789" require="required">
+                            <span data-placeholder="Phone Number"></span>
                           </div>
                           <div class="txtb">
                             <input type="password" id="password" th:field="*{password}" pattern=".{6,}" title="Password must have 6 or more characters" require="required">
@@ -27,7 +27,7 @@
                           
                           <div class="row" style="margin-top:20px;">
 						       <div class="col-md-12">
-						        <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" 
+						        <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" 
 						        	class="alert alert-danger alert-dismissable" style="border-radius:0;">
 						         <p style="position: relative; margin:0;">
 						          <i class="icon fa fa-ban"></i>
@@ -41,7 +41,7 @@
                             <a th:href="@{/login}">Return Login page</a>
                           </div>
                           <div class="bottom-login">
-                            <a th:href="@{/registerPhone}">Register By Phone</a>
+                            <a th:href="@{/register}">Register By Email</a>
                           </div>
                         </div>
                         

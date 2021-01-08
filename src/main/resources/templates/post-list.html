@@ -54,7 +54,7 @@
                         <tr>
                             <th>ID Post</th>
                             <th>Title</th>
-                            <th>Username/Email</th>
+                            <th>User ID</th>
                             <th>Type</th>
                             <th>Date</th>
                             <th>Status</th>
@@ -65,7 +65,7 @@
                         <tr th:each="p : ${listPost}" th:style="${p.status==false ? 'background:#e0f3ff' : ''}" >
                             <td th:text="${p.id_post}"></td>
                             <td th:text="${p.title}"></td>
-                            <td th:text="${p.username}"></td>
+                            <td th:text="${p.user.id_user}"></td>
                             <td th:text="${p.type.type_name}"></td>
                             <td th:text="${#dates.format(p.date, 'dd-MM-yyyy')}"></td>
                             <td th:text="${p.status}"></td>
