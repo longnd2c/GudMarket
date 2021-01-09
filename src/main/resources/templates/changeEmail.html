@@ -1,5 +1,5 @@
-<th:block th:include="/common/webapp/top"></th:block>  
-<th:block th:include="/common/webapp/navbar"></th:block>  
+<th:block th:insert="common/webapp/top"></th:block>  
+<th:block th:insert="common/webapp/navbar"></th:block> 
 
 <script>
 	document.title='GudMarket - Change Email';
@@ -66,4 +66,4 @@ if(password.value != confirm_password.value) {
 password.onchange = validatePassword;
 confirm_password.onkeyup = validatePassword;
 </script>
-<th:block th:include="/common/webapp/footer"></th:block>  
+<th:block th:insert="common/webapp/footer"></th:block>  

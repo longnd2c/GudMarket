@@ -1,5 +1,5 @@
-<th:block th:include="/common/webapp/top"></th:block>  
-<th:block th:include="/common/webapp/navbar"></th:block>  
+<th:block th:insert="common/webapp/top"></th:block>  
+<th:block th:insert="common/webapp/navbar"></th:block>  
 <script>
 		document.title='GudMarket - User Profile'
 </script>
@@ -212,4 +212,4 @@ function send_form(id_post) {
     document.getElementById("post_form"+id_post).submit();
 }
 </script>
-<th:block th:include="/common/webapp/footer"></th:block>  
+<th:block th:insert="common/webapp/footer"></th:block>  
