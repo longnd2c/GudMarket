@@ -1,5 +1,5 @@
-<th:block th:include="/common/webapp/top"></th:block>  
-<th:block th:include="/common/webapp/navbar"></th:block>  
+<th:block th:insert="~{/common/webapp/top}"></th:block>  
+<th:block th:insert="~{/common/webapp/navbar}"></th:block>  
 
 
 <!-- Slider -->
@@ -292,7 +292,7 @@
 		</div>
 	</div>
 
-<th:block th:include="/common/webapp/footer"></th:block>  
+<th:block th:insert="~{/common/webapp/footer}"></th:block>  
 <script>
 		document.title='GudMarket - Market for all';
 			$(document).ready(function() {
