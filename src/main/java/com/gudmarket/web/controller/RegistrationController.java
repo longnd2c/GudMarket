@@ -76,7 +76,8 @@ public class RegistrationController {
 	        }
 	        else {
 	        	service.saveUser(user, password);
-			    String appUrl = "http://localhost:8080";
+			    //String appUrl = "http://localhost:8080";
+	        	String appUrl = request.getContextPath();
 			    eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, request.getLocale(), appUrl));
 			    model.addAttribute("email", email);
 		        return new ModelAndView("redirect:/successRegister", model);
@@ -188,7 +189,8 @@ public class RegistrationController {
 	            modelAndView.setViewName("forgotPassword");
 	        }
 	        else {
-			    String appUrl = "http://localhost:8080";
+			    //String appUrl = "http://localhost:8080";
+	        	String appUrl = request.getContextPath();
 			    eventPublisher.publishEvent(new PasswordResetCompleteEvent(accExists, request.getLocale(), appUrl));
 			    model.addAttribute("emailOrPhone", emailOrPhone);
 		        return new ModelAndView("redirect:/successForgot", model);

@@ -204,7 +204,8 @@ public class SellerController {
 		  String userId=loginedUser.getUsername();
 		  Account user=accRepo.findByUserId(userId);
 		  if(accExists==null) {
-			  String appUrl = "http://localhost:8080";
+			  //String appUrl = "http://localhost:8080";
+			  String appUrl = request.getContextPath();
 			    eventPublisher.publishEvent(new OnChangeEmailCompleteEvent(user, request.getLocale(), appUrl, email));
 			    redirectAttributes.addFlashAttribute("message", "An confirm email was sent to "+ email+". Please check your email!");
 				  return "redirect:/changeEmail";
